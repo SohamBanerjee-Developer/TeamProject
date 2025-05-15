@@ -3,7 +3,7 @@ import {Schema, model, Document, Model} from "mongoose";
 export interface IComment extends Document {
     userId: Schema.Types.ObjectId;
     postId: Schema.Types.ObjectId;
-    postModel: "PGPost" | "Store" | "POST";
+    postModel: "PGPost" | "Store" | "POST" | "Comment";
     comment: string;
 
 }
@@ -19,7 +19,7 @@ const commentSchema = new Schema<IComment>({
     postModel: {
         type: String,
         required: true,
-        enum: ["PGPost", "Store", "POST"]
+        enum: ["PGPost", "Store", "POST", "Comment"]
     },
 
     comment: { type: String, required: true },

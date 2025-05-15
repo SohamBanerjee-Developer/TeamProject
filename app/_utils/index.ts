@@ -1,0 +1,30 @@
+
+export type IShowcae = {
+    id: number,
+    heading: string,
+    description: string,
+}
+
+export const showcase: IShowcae[] = [
+    {
+        id: 1,
+        heading: "Convenient Living Solutions",
+        description: "Proximity-based accommodation ensures students and staff have easy access to their institutions."
+    },
+    {
+        id: 2,
+        heading: "Secure and Anonymous Discussions",
+        description: "We provide 100% secure environment, where you can speck without care the law."
+    },
+    {
+        id: 3,
+        heading: "Affordable Living Solutions",
+        description: "We provide affordable living solutions for students and staff."
+    },
+    {
+        id: 4,
+        heading: "Local Area information",
+        description: "We provide local area information like stores, restaurants, medical shop and all the important things.  "
+    }
+
+]
