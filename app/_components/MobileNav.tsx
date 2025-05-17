@@ -8,8 +8,9 @@ const MobileNav = () => {
             <div className="relative h-full flex-center">
                 <h1 className="text-5xl header-font font-bold">SENV</h1>
             </div>
-            <div className="relative h-full flex-center">
-                <Link href="/login">login</Link>
+            <div className="relative h-full flex-gap gap-4 text-lg font-bold description-font">
+                <Link href="/auth/login" className="hover:text-orange-400 transition duration-150">Login</Link>
+                <Link href="/auth/signup" className="hover:text-orange-400 transition duration-150" >Signup</Link>
             </div>
         </div>
     )

@@ -1,5 +1,5 @@
 import type {Metadata} from "next";
-import { Space_Grotesk, Funnel_Sans} from "next/font/google";
+import {Space_Grotesk, Funnel_Sans} from "next/font/google";
 import "./globals.css";
 import MobileNav from "@/app/_components/MobileNav";
 
@@ -35,7 +35,12 @@ export default function RootLayout({
         <nav className="h-18 w-full relative overflow-hidden">
             <MobileNav/>
         </nav>
-        <main className="h-[calc(100%-4.5rem)] overflow-hidden scrollbar-hide"> {children}</main>
+        <main className="h-[calc(100%-7.5666rem)] overflow-hidden scrollbar-hide"> {children}</main>
+        <footer className="w-full h-12 flex-center">
+            <p className="text-sm">
+                &copy; 2021 SENV
+            </p>
+        </footer>
         </body>
         </html>
     );
