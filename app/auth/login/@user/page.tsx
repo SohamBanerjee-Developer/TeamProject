@@ -6,7 +6,7 @@ import Lable from "@/app/_components/Lable";
 
 import Link from "next/link";
 import FormButton from "@/app/_components/FormButton";
-import { loginUser} from "@/app/_lib/action/action";
+import {userLogin} from "@/app/_lib/actions/Authentication/action";
 
 
 const Page = () => {
@@ -15,7 +15,7 @@ const Page = () => {
         <div className=" relative h-full w-full flex-center">
             <div className="w-full max-w-md bg-gray-800 py-3 px-6 rounded-xl shadow-md">
                 <h2 className="text-2xl font-bold text-center  header-font base-tex mb-2t">Login to User Account</h2>
-                <form className="relative w-full space-y-1" action={loginUser}>
+                <form className="relative w-full space-y-1" action={userLogin}>
                     <FormDiv>
                         <Lable className="block text-sm font-medium text-gray-200" value="Email or username:"/>
                         <div className="w-full">

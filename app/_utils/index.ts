@@ -28,3 +28,42 @@ export const showcase: IShowcae[] = [
     }
 
 ]
+
+export interface IResponse {
+    data?: string | number | unknown ;
+    message?: string;
+    flag: boolean;
+}
+
+export  class AppResponse implements IResponse {
+    data?: string | number | unknown;
+    message?: string;
+    flag: boolean;
+
+    constructor(data?: string | number | unknown, message?: string, flag: boolean = true) {
+        this.data = data;
+        this.message = message;
+        this.flag = flag;
+    }
+}
+
+export interface IError {
+
+    code: number;
+    flag: boolean;
+}
+
+export class AppError extends Error implements IError  {
+    code: number;
+    flag: boolean;
+
+    constructor(message: string, code: number, flag: boolean = false, name: string = "AppError") {
+        super(message);
+        this.message = message;
+        this.code = code;
+        this.flag = flag;
+        Object.setPrototypeOf(this, AppError.prototype);
+        this.name = name;
+    }
+
+}

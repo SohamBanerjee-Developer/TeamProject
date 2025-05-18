@@ -1,4 +1,5 @@
-import {Schema, model, Document} from "mongoose";
+import { Schema, model, Document, Model, models } from "mongoose";
+
 
 export interface IUser extends Document {
     fullName: string;
@@ -7,17 +8,21 @@ export interface IUser extends Document {
     address: string;
     userImage: string;
     email: string;
-
+    password: string;
+    verificationCode: string;
+    refreshToken: string;
+    accessToken: string;
 }
 
 const userSchema = new Schema<IUser>({
-    fullName: {type: String, required: true},
-    phoneNumber: {type: String, required: true},
-    addharCard: {type: String, required: true},
-    address: {type: String, required: true},
-    userImage: {type: String},
-    email: {type: String, required: true, unique: true},
+    fullName: { type: String, required: true },
+    phoneNumber: { type: String, required: true },
+    addharCard: { type: String, required: true },
+    address: { type: String, required: true },
+    userImage: { type: String },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+}, { timestamps: true });
 
-}, {timestamps: true});
 
-export const User = model<IUser>("User", userSchema);
+export const User: Model<IUser> = models.Users || model<IUser>("Users", userSchema);

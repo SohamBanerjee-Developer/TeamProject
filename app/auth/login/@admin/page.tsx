@@ -4,18 +4,18 @@ import Lable from "@/app/_components/Lable";
 import Input from "@/app/_components/Input";
 import Link from "next/link";
 import FormButton from "@/app/_components/FormButton";
-import {handleAdminLogin} from "@/app/_lib/action/action";
+import {userLogin} from "@/app/_lib/actions/Authentication/action";
 
 const Page = () => {
     return (
         <div className=" relative h-full w-full flex-center">
             <div className="w-full max-w-md bg-gray-800 py-3 px-6 rounded-xl shadow-md">
                 <h2 className="text-2xl font-bold text-center  header-font base-tex mb-2t">Login to Admin Account</h2>
-                <form className="relative w-full space-y-1" action={handleAdminLogin}>
+                <form className="relative w-full space-y-1" action={userLogin}>
                     <FormDiv>
                         <Lable className="block text-sm font-medium text-gray-200" value="Email or username:"/>
                         <div className="w-full">
-                            <Input className="mt-1 block w-full px-4 py-1 border border-gray-300 rounded-xl shadow-sm outline-0 text-lg description-font" type="text" />
+                            <Input className="mt-1 block w-full px-4 py-1 border border-gray-300 rounded-xl shadow-sm outline-0 text-lg description-font" type="text" name="identifier" id="identifier"/>
                             {/*{*/}
                             {/*    errors.identifier && ( <Error className="text-red-500 header-font text-sm font-[700] mt-1" message={errors.identifier.message || ""}/>)*/}
                             {/*}*/}
@@ -24,7 +24,7 @@ const Page = () => {
                     <FormDiv>
                         <Lable className="block text-sm font-medium text-gray-200" value="Password:"/>
                         <div className="w-full">
-                            <Input className="mt-1 block w-full px-4 py-1 border border-gray-300 rounded-xl shadow-sm outline-0 text-lg description-font" type="text" />
+                            <Input className="mt-1 block w-full px-4 py-1 border border-gray-300 rounded-xl shadow-sm outline-0 text-lg description-font" type="text" id="password" name="password"/>
                             {/*{*/}
                             {/*    errors.password && ( <Error className="text-red-500 header-font text-sm font-[700] mt-1" message={errors.password.message || ""}/>)*/}
                             {/*}*/}
