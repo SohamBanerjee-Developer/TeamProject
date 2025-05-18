@@ -1,8 +1,17 @@
-import React from 'react'
+"use client"
 
-const FormButton = () => {
+import {useFormStatus} from "react-dom";
+
+const FormButton = ({className}: {className:string}) => {
+    const {pending} = useFormStatus();
+
     return (
-        <div>FormButton</div>
+        <button type="submit" className={className} disabled={pending}>
+            {
+                pending ? "Loading..." : "Submit"
+            }
+        </button>
     )
 }
+
 export default FormButton
