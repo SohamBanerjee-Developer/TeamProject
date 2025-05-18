@@ -2,6 +2,8 @@ import type {Metadata} from "next";
 import {Space_Grotesk, Funnel_Sans} from "next/font/google";
 import "./globals.css";
 import MobileNav from "@/app/_components/MobileNav";
+import {Suspense} from "react";
+import Loading from "@/app/_components/Loading";
 
 const spaceGrotesk = Space_Grotesk({
         subsets: ["latin"],
@@ -35,7 +37,9 @@ export default function RootLayout({
         <nav className="h-18 w-full relative overflow-hidden">
             <MobileNav/>
         </nav>
-        <main className="h-[calc(100%-4.5rem)] overflow-hidden scrollbar-hide"> {children}</main>
+            <Suspense fallback={<Loading/>}>
+                <main className="h-[calc(100%-4.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"> {children}</main>
+            </Suspense>
         </body>
         </html>
     );
