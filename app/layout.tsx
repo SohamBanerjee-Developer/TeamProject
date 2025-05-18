@@ -35,12 +35,7 @@ export default function RootLayout({
         <nav className="h-18 w-full relative overflow-hidden">
             <MobileNav/>
         </nav>
-        <main className="h-[calc(100%-7.5666rem)] overflow-hidden scrollbar-hide"> {children}</main>
-        <footer className="w-full h-12 flex-center">
-            <p className="text-sm">
-                &copy; 2021 SENV
-            </p>
-        </footer>
+        <main className="h-[calc(100%-4.5rem)] overflow-hidden scrollbar-hide"> {children}</main>
         </body>
         </html>
     );
