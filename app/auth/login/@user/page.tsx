@@ -6,7 +6,7 @@ import Lable from "@/app/_components/Lable";
 
 import Link from "next/link";
 import FormButton from "@/app/_components/FormButton";
-import {handleAdminLogin} from "@/app/_lib/action/action";
+import { loginUser} from "@/app/_lib/action/action";
 
 
 const Page = () => {
@@ -15,13 +15,13 @@ const Page = () => {
         <div className=" relative h-full w-full flex-center">
             <div className="w-full max-w-md bg-gray-800 py-3 px-6 rounded-xl shadow-md">
                 <h2 className="text-2xl font-bold text-center  header-font base-tex mb-2t">Login to User Account</h2>
-                <form className="relative w-full space-y-1" action={handleAdminLogin}>
+                <form className="relative w-full space-y-1" action={loginUser}>
                     <FormDiv>
                         <Lable className="block text-sm font-medium text-gray-200" value="Email or username:"/>
                         <div className="w-full">
                             <Input
                                 className="mt-1 block w-full px-4 py-1 border border-gray-300 rounded-xl shadow-sm outline-0 text-lg description-font"
-                                type="text"/>
+                                type="text" name="identifier" id="identifier"/>
 
                         </div>
                     </FormDiv>
@@ -30,7 +30,7 @@ const Page = () => {
                         <div className="w-full">
                             <Input
                                 className="mt-1 block w-full px-4 py-1 border border-gray-300 rounded-xl shadow-sm outline-0 text-lg description-font"
-                                type="text"/>
+                                type="password" name="password" id="password"/>
 
                         </div>
                         <Link href="#" className="text-orange-400 hover:underline">Forgot password?</Link>

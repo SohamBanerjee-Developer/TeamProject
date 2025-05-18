@@ -3,8 +3,8 @@ import  Link from "next/link"
 
 const Signup = () => {
     return (
-        <div className="w-full h-full flex-center relative px-5">
-            <div className="space-y-3 w-full  relative text-center font-bold capitalize">
+        <div className="w-full h-full flex-center relative px-5 flex-center">
+            <div className="space-y-3 w-full md:w-1/2  relative text-center font-bold capitalize">
                 <h1 className="text-4xl  header-font">Create your account</h1>
                 <p className="text-2xl font-bold">As A </p>
                 <div className="relative flex-between px-12 text-xl ">

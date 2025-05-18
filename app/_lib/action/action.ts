@@ -1,10 +1,18 @@
 "use server"
 
-export const handleAdminLogin = async (data: FormData): Promise<void> => {
- await new Promise((resolve) => {
-       setTimeout(() => {resolve(true)}, 12000)
-   });
-    console.log(data)
+import {databaseConnection} from "@/app/_lib/db/database";
 
+export const handleAdminLogin = async (data: FormData): Promise<void> => {
+    const identifier = data.get("identifier");
+    const password = data.get("password");
+    console.log(password)
+
+}
+
+export const loginUser = async (data: FormData): Promise<void> => {
+    await databaseConnection();
+
+    const identifier = data.get("identifier");
+    const password = data.get("password");
 
 }
