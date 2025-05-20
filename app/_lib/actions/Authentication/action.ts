@@ -1,8 +1,7 @@
 "use server";
 
-import axios from "axios";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import {cookies} from "next/headers";
+import {redirect} from "next/navigation";
 import {toast} from "react-toastify";
 
 /**
@@ -10,40 +9,35 @@ import {toast} from "react-toastify";
  * Sets the accessToken and role as cookies on success.
  * Redirects to homepage.
  */
-export const userLogin = async (data: FormData): Promise<void> => {
-    try {
-        const res = await axios.post("https://team-project-livid.vercel.app/api/auth/user/login", data);
-        const {
-            data: { accessToken, role },
-        } = res.data;
+export const userLogin = async (fromData: FormData): Promise<void> => {
+    const res = await fetch("https://team-project-livid.vercel.app/api/auth/user/login", {
+        method: "POST",
+        body: fromData,
+    })
 
-        const cookieStore = await cookies();
+    const {data} = await res.json()
 
-        cookieStore.set("accessToken", accessToken, {
-            maxAge: 60 * 60 * 24 * 30, // 30 days
-            path: "/",
-            httpOnly: true,
-            sameSite: "strict",
-        });
 
-        cookieStore.set("role", role, {
-            path: "/",
-            httpOnly: true,
-            sameSite: "strict",
-        });
-
-        redirect("/");
-    } catch (e: unknown) {
-        // Don't block Next.js redirects
-        if (axios.isAxiosError(e)) {
-            console.error("Axios Error:", e.response?.data?.message || e.message);
-            toast.error(e.response?.data?.message || "Login failed. Please try again.")
-
-        } else {
-            console.error("Unknown Error:", e);
-            // toast.error( "Login failed. Please try again.")
-        }
+    if (!data.accessToken) {
+        throw new Error("Invalid credentials");
     }
+
+    const cookieStore = await cookies();
+
+    cookieStore.set("accessToken", data.accessToken, {
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+    });
+
+    cookieStore.set("role", data.role, {
+        path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+    });
+
+    redirect("/");
 };
 
 /**
@@ -51,19 +45,15 @@ export const userLogin = async (data: FormData): Promise<void> => {
  * Redirects to login page on success.
  */
 export const userSignup = async (data: FormData): Promise<void> => {
-    try {
-        await axios.post("https://team-project-livid.vercel.app/api/auth/user/signup", data);
-        redirect("/auth/login");
-    } catch (e: unknown) {
-        // Don't block Next.js redirects
+  const res =  await fetch("https://team-project-livid.vercel.app/api/auth/user/signup", {
+        method: "POST",
+        body: data,
+    })
 
-        if (axios.isAxiosError(e)) {
-            console.error("Axios Error:", e.response?.data?.message || e.message);
-            toast.error(e.response?.data?.message || "Signup failed. Please try again.")
+    const resData = await res.json();
 
-        } else {
-            console.error("Unknown Error:", e);
-            // toast.error( "An unexpected error occurred during signup.")
-        }
-    }
+  if (!resData.flag) {
+      throw new Error(resData.message);
+  }
+    // redirect("/auth/login");
 };
