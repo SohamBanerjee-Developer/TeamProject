@@ -1,9 +1,12 @@
+"use client"
+
 import React from 'react'
 import FormDiv from "@/app/_components/FormDiv";
 import Lable from "@/app/_components/Lable";
 import Input from "@/app/_components/Input";
 import Link from "next/link";
 import FormButton from "@/app/_components/FormButton";
+import {userSignup} from "@/app/_lib/actions/Authentication/action";
 
 const Page = () => {
     return (
@@ -11,7 +14,7 @@ const Page = () => {
             <div className="max-w-xl w-full space-y-6  bg-gray-800 py-3 px-6 rounded-xl shadow-md">
                 <h1 className="text-3xl font-bold text-center">Sign Up</h1>
 
-                <form className="space-y-2">
+                <form className="space-y-2" action={ userSignup}>
                     {/* Full Name */}
                     <FormDiv>
                         <Lable className="block text-sm font-medium text-gray-200" value="Full Name:"/>

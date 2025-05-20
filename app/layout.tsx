@@ -4,6 +4,8 @@ import "./globals.css";
 import MobileNav from "@/app/_components/MobileNav";
 import {Suspense} from "react";
 import Loading from "@/app/_components/Loading";
+import { ToastContainer, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const spaceGrotesk = Space_Grotesk({
         subsets: ["latin"],
@@ -37,9 +39,22 @@ export default function RootLayout({
         <nav className="h-18 w-full relative overflow-hidden">
             <MobileNav/>
         </nav>
-            <Suspense fallback={<Loading/>}>
-                <main className="h-[calc(100%-4.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"> {children}</main>
-            </Suspense>
+        <Suspense fallback={<Loading/>}>
+            <main className="h-[calc(100%-4.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"> {children}</main>
+        </Suspense>
+        <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Bounce}
+        />
         </body>
         </html>
     );

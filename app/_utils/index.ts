@@ -33,17 +33,19 @@ export interface IResponse {
     data?: string | number | unknown ;
     message?: string;
     flag: boolean;
+    code: number;
 }
 
 export  class AppResponse implements IResponse {
     data?: string | number | unknown;
     message?: string;
     flag: boolean;
-
-    constructor(data?: string | number | unknown, message?: string, flag: boolean = true) {
+    code: number;
+    constructor(data?: string | number | unknown, message?: string, flag: boolean = true, code: number = 200) {
         this.data = data;
         this.message = message;
         this.flag = flag;
+        this.code = code;
     }
 }
 

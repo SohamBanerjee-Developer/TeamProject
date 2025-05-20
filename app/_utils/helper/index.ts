@@ -1,23 +1,50 @@
 import { AppError } from "@/app/_utils";
+import {cookies} from "next/headers";
+import jwt from "jsonwebtoken";
+import {redirect} from "next/navigation";
 
-type AsyncFunction<T extends any[] = [], R = any> = (...args: T) => Promise<R | AppError>;
+type AsyncHandler<T extends any[] = any> = (...args: T) => Promise<Response>;
 
-export const asyncHandler = <T extends any[] = [], R = any>(
-    fn: (...args: T) => Promise<R>
-): AsyncFunction<T, R> => {
-    return async (...args: T): Promise<R | AppError> => {
+export const asyncHandler = <T extends any[] = any>(fn: AsyncHandler<T>): AsyncHandler<T> => {
+    return async (...args: T): Promise<Response> => {
         try {
             return await fn(...args);
-        } catch (e: unknown) {
-            if (e instanceof AppError) {
-                return e;
+        } catch (error: unknown) {
+            if (error instanceof AppError) {
+                return Response.json(
+                    { success: false, message: error.message },
+                    { status: error.code }
+                );
             }
 
-            if (e instanceof Error) {
-                return new AppError(e.message, 500);
+            if (error instanceof Error) {
+                return Response.json(
+                    { success: false, message: error.message },
+                    { status: 500 }
+                );
             }
 
-            return new AppError(String(e) || "Something went wrong!", 500);
+            return Response.json(
+                { success: false, message: "Unknown error occurred" },
+                { status: 500 }
+            );
         }
     };
 };
+
+
+export const generateOTP = (): string => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+export const getToken = async ():Promise<string> => {
+    try {
+        const cookie = await cookies();
+        const {_id} = jwt.verify((cookie.get("accessToken")?.value) || "", process.env.SECRET_KEY || "") as {_id: string};
+
+        return _id;
+    }catch (e: unknown) {
+        console.log(e);
+        redirect("/auth/login")
+    }
+}

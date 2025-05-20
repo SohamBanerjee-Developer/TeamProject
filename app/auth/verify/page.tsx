@@ -1,11 +1,16 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Input from "@/app/_components/Input";
+import FormButton from "@/app/_components/FormButton";
+import {resendOtp, verifyUser} from "@/app/_lib/actions/verification/action";
+import {toast} from "react-toastify";
+import {redirect} from "next/navigation";
 
 const Verification = () => {
-
     const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
+    const [resendDisabled, setResendDisabled] = useState(false);
+
 
     const handleChange = (index: number, value: string) => {
         if (!/^\d?$/.test(value)) return;
@@ -18,14 +23,32 @@ const Verification = () => {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        let code = '';
+        const code = otp.join('');
 
-        for (const digit of otp) {
-            code += digit;
+
+        try {
+            await verifyUser({otp: code});
+            redirect("/")
+        } catch (error: unknown) {
+           const err = error as Error;
+           toast.error(err.message);
         }
-        console.log(code);
+    };
+
+    const handleResendOtp = async () => {
+        setResendDisabled(true);
+
+        try {
+           await resendOtp();
+
+        } catch (error: unknown) {
+            const err = error as Error;
+            toast.error(err.message);
+        }
+        // Re-enable the button after 30 seconds to prevent spamming
+        setTimeout(() => setResendDisabled(false), 30000);
     };
 
     return (
@@ -43,19 +66,28 @@ const Verification = () => {
                                 inputMode="numeric"
                                 maxLength={1}
                                 value={digit}
+                                name={`otp-${index}`}
                                 onChange={(e) => handleChange(index, e.target.value)}
                                 className="w-12 h-14 text-center text-2xl border border-[#FFFDF6]/40 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-[#FFFDF6]/70 transition"
                             />
                         ))}
                     </div>
 
-                    <button
-                        type="submit"
+                    <FormButton
                         className="w-full py-3 bg-[#FFFDF6] text-[#0B192C] font-semibold rounded-md hover:bg-opacity-90 transition cursor-pointer"
-                    >
-                        Verify
-                    </button>
+                    />
+
                 </form>
+
+                {/* Resend OTP button */}
+                <button
+                    onClick={handleResendOtp}
+                    disabled={resendDisabled}
+                    className={`mt-4 text-sm underline text-[#FFFDF6]/80 hover:text-[#FFFDF6] transition ${resendDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                >
+                    Resend OTP
+                </button>
+
             </div>
         </div>
     );
