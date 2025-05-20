@@ -2,7 +2,6 @@
 
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
-import {toast} from "react-toastify";
 
 /**
  * Logs in a user by sending login data to the API.
