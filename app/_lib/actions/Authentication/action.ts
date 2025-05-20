@@ -17,9 +17,9 @@ export const userLogin = async (fromData: FormData): Promise<void> => {
     const {data} = await res.json()
 
 
-    if (!data.accessToken) {
-        throw new Error("Invalid credentials");
-    }
+    // if (!data.accessToken) {
+    //     throw new Error("Invalid credentials");
+    // }
 
     const cookieStore = await cookies();
 
