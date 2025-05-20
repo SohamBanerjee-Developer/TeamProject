@@ -5,12 +5,13 @@ import Input from "@/app/_components/Input";
 import FormButton from "@/app/_components/FormButton";
 import {resendOtp, verifyUser} from "@/app/_lib/actions/verification/action";
 import {toast} from "react-toastify";
-import {redirect} from "next/navigation";
+import {useRouter} from "next/navigation";
+
 
 const Verification = () => {
     const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
     const [resendDisabled, setResendDisabled] = useState(false);
-
+    const router = useRouter();
 
     const handleChange = (index: number, value: string) => {
         if (!/^\d?$/.test(value)) return;
@@ -30,7 +31,7 @@ const Verification = () => {
 
         try {
             await verifyUser({otp: code});
-            redirect("/")
+            router.push('/');
         } catch (error: unknown) {
            const err = error as Error;
            toast.error(err.message);
