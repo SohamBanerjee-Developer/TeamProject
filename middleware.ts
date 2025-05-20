@@ -23,5 +23,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/", "/auth/:path*"], // Adjust this to match all protected routes
+    matcher: [ "/auth/:path*"], // Adjust this to match all protected routes
 };
