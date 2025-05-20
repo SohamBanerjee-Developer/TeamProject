@@ -7,14 +7,25 @@ import Input from "@/app/_components/Input";
 import Link from "next/link";
 import FormButton from "@/app/_components/FormButton";
 import {userSignup} from "@/app/_lib/actions/Authentication/action";
+import {toast} from "react-toastify";
 
 const Page = () => {
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const data = new FormData(e.target as HTMLFormElement);
+        const getRes = await userSignup(data);
+        if (getRes.error) {
+           toast.error(getRes.error);
+        }
+    }
+
     return (
         <div className="h-full flex-center bg-[#0B192C] text-[#FFFDF6] p-5 ">
             <div className="max-w-xl  h-full w-full space-y-6 bg-gray-800 py-3 px-6 rounded-xl shadow-md overflow-x-hidden overflow-y-scroll">
                 <h1 className="text-3xl font-bold text-center">Sign Up</h1>
 
-                <form className="space-y-1" action={userSignup}>
+                <form className="space-y-1" onSubmit={handleSubmit}>
                     {/* Full Name */}
                     <FormDiv>
                         <Lable className="block text-sm font-medium text-gray-200" value="Full Name:"/>
@@ -101,7 +112,7 @@ const Page = () => {
 
                     {/* Link to host signup */}
                     <p className="font-medium description-font">
-                        Want to create host account? <Link href="/auth/signup/host" className="header-font text-blue-500"> Host</Link>
+                        Want to create host account? <Link href="/app/(public)/auth/signup/host" className="header-font text-blue-500"> Host</Link>
                     </p>
 
                     {/* Submit Button */}

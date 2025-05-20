@@ -3,12 +3,7 @@
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
 
-/**
- * Logs in a user by sending login data to the API.
- * Sets the accessToken and role as cookies on success.
- * Redirects to homepage.
- */
-export const userLogin = async (fromData: FormData): Promise<void> => {
+export const userLogin = async (fromData: FormData): Promise<{ error?: string }> => {
     const res = await fetch("https://team-project-livid.vercel.app/api/auth/user/login", {
         method: "POST",
         body: fromData,
@@ -16,10 +11,10 @@ export const userLogin = async (fromData: FormData): Promise<void> => {
 
     const {data} = await res.json()
 
+    if (!data.accessToken) {
+        return {error: "Invalid credentials"}
+    }
 
-    // if (!data.accessToken) {
-    //     throw new Error("Invalid credentials");
-    // }
 
     const cookieStore = await cookies();
 
@@ -43,16 +38,16 @@ export const userLogin = async (fromData: FormData): Promise<void> => {
  * Registers a user by sending signup data to the API.
  * Redirects to login page on success.
  */
-export const userSignup = async (data: FormData): Promise<void> => {
-  const res =  await fetch("https://team-project-livid.vercel.app/api/auth/user/signup", {
+export const userSignup = async (data: FormData): Promise<{ error?: string }> => {
+    const res = await fetch("https://team-project-livid.vercel.app/api/auth/user/signup", {
         method: "POST",
         body: data,
     })
 
     const resData = await res.json();
 
-  if (!resData.flag) {
-      throw new Error(resData.message);
-  }
+    if (!resData.flag) {
+        return {error: resData.message};
+    }
     redirect("/auth/login");
 };
