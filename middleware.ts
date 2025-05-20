@@ -7,15 +7,9 @@ export async function middleware(request: NextRequest) {
 
     const store = await cookies();
     const token = store.get("accessToken")?.value;
-    const verified = store.get("verify")?.value;
-
-    // ⛔️ If user is logged in but not verified, redirect to /auth/verify
-    if (token && (!verified || verified === "false") && pathname !== "/auth/verify") {
-        return NextResponse.redirect(new URL("/auth/verify", request.nextUrl));
-    }
 
     // ✅ If a user is logged in and trying to access /auth routes, redirect to home
-    if (token && isPublicRoute && pathname !== "/auth/verify") {
+    if (token && isPublicRoute) {
         return NextResponse.redirect(new URL("/", request.nextUrl));
     }
 

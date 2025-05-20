@@ -1,12 +1,10 @@
 import type {NextRequest} from "next/server";
-import {asyncHandler} from "@/app/_utils/helper";
+import {asyncHandler, generateOTP} from "@/app/_utils/helper";
 import {AppError, AppResponse} from "@/app/_utils";
 import {IUser, User} from "@/app/_lib/models/User";
 import {databaseConnection} from "@/app/_lib/db/database";
 import bcrypt from "bcryptjs";
-import {welcomeMessageHelper} from "@/app/_lib/resend/WelcomeMessage";
-
-
+import {OtpVerificationHelper} from "@/app/_lib/resend/OtpVerification";
 
 
 const userLoginHandler = async (req: NextRequest): Promise<Response> => {
@@ -57,15 +55,21 @@ const userLoginHandler = async (req: NextRequest): Promise<Response> => {
     if (!userCreate._id) {
         throw new AppError("User not created! please try again later!", 500, false, "User not created");
     }
+    const otp = generateOTP();
+    const otpExpires = new Date(Date.now() + 1000 * 60 * 5);
+    userCreate.verificationCode = otp;
+    userCreate.expiryTime = otpExpires;
 
-   const msgRes =  await welcomeMessageHelper(userCreate.email, userCreate.fullName);
+    await userCreate.save({validateBeforeSave: false});
+
+    const msgRes = await OtpVerificationHelper(userCreate.fullName, otp, userCreate.email);
 
     if (!msgRes.flag) {
         await User.findByIdAndDelete(userCreate._id);
         throw new AppError("User not created! please try again later!", 500, false, "User not created");
     }
 
-    return Response.json(new AppResponse( "ok", "User created successfully!", true));
+    return Response.json(new AppResponse("ok", "User created successfully!", true));
 }
 
 export const POST = asyncHandler(userLoginHandler)

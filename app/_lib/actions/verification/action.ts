@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import {getToken} from "@/app/_utils/helper";
-import {cookies} from "next/headers";
+
 
 export const verifyUser =  async (data:  { otp: string}):Promise<void> => {
     try {
@@ -33,7 +33,7 @@ export const verifyUser =  async (data:  { otp: string}):Promise<void> => {
 export const resendOtp = async ():Promise<void> => {
     try{
         const id = await getToken();
-        const res  = await axios({
+         await axios({
             method: "POST",
             url:"http://localhost:3000/api/auth/user/resendotp",
             data: {
@@ -43,13 +43,6 @@ export const resendOtp = async ():Promise<void> => {
                 "Content-Type": "application/json"
             }
         });
-        const cookie = await cookies();
-        cookie.set("verify", "true", {
-            path: "/",
-            httpOnly: true,
-            sameSite: "strict",
-        });
-
     }catch (e: unknown) {
         if (axios.isAxiosError(e)) {
             throw new Error(e.response?.data?.message || "Something went wrong");

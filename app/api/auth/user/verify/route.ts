@@ -1,4 +1,3 @@
-
 import type {NextRequest} from "next/server";
 import {AppResponse} from "@/app/_utils";
 import {AppError} from "@/app/_utils";
@@ -6,7 +5,7 @@ import {IUser, User} from "@/app/_lib/models/User";
 import {asyncHandler} from "@/app/_utils/helper";
 
 
-export const verifyUser = async (req: NextRequest) => {
+const verifyUser = async (req: NextRequest): Promise<Response> => {
     const {userId, otp} = await req.json();
 
 
@@ -28,6 +27,7 @@ export const verifyUser = async (req: NextRequest) => {
     }
 
     getUser.verificationCode = "";
+    getUser.isVerified = true;
     await getUser.save({validateBeforeSave: false});
 
     return Response.json(new AppResponse("ok", "OTP verified successfully", true));

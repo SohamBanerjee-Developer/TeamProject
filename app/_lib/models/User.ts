@@ -13,6 +13,7 @@ export interface IUser extends Document {
     refreshToken: string;
     accessToken: string;
     role: string;
+    isVerified: boolean;
 }
 
 const userSchema = new Schema<IUser>({
@@ -27,7 +28,8 @@ const userSchema = new Schema<IUser>({
     accessToken: {type: String},
     expiryTime: {type: Date},
     verificationCode: {type: String},
-    role: {type: String, required: true}
+    role: {type: String, required: true},
+    isVerified: {type: Boolean, default: false}
 }, {timestamps: true});
 
 

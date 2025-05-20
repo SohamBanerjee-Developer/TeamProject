@@ -1,7 +1,7 @@
 import OtpVerificationEmail from "@/app/_components/Email/Verification";
 import {resend} from "@/app/_lib/resend/configure";
 
-export const OtpVerificationHelper = async (fullName: string, otp: string, userEmail): Promise<{ flag: boolean }> => {
+export const OtpVerificationHelper = async (fullName: string, otp: string, userEmail:string): Promise<{ flag: boolean }> => {
     const {error} = await resend.emails.send({
         from: 'Acme <onboarding@resend.dev>',
         to: [userEmail],
