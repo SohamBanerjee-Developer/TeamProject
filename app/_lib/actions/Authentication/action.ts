@@ -55,5 +55,5 @@ export const userSignup = async (data: FormData): Promise<void> => {
   if (!resData.flag) {
       throw new Error(resData.message);
   }
-    // redirect("/auth/login");
+    redirect("/auth/login");
 };
