@@ -12,7 +12,7 @@ import {toast} from "react-toastify";
  */
 export const userLogin = async (data: FormData): Promise<void> => {
     try {
-        const res = await axios.post("http://localhost:3000/api/auth/user/login", data);
+        const res = await axios.post("https://team-project-livid.vercel.app/api/auth/user/login", data);
         const {
             data: { accessToken, role },
         } = res.data;
@@ -52,7 +52,7 @@ export const userLogin = async (data: FormData): Promise<void> => {
  */
 export const userSignup = async (data: FormData): Promise<void> => {
     try {
-        await axios.post("http://localhost:3000/api/auth/user/signup", data);
+        await axios.post("https://team-project-livid.vercel.app/api/auth/user/signup", data);
         redirect("/auth/login");
     } catch (e: unknown) {
         // Don't block Next.js redirects

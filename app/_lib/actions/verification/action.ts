@@ -9,7 +9,7 @@ export const verifyUser =  async (data:  { otp: string}):Promise<void> => {
        const id = await getToken();
         const res  = await axios({
             method: "POST",
-            url:"http://localhost:3000/api/auth/user/verify",
+            url:"https://team-project-livid.vercel.app/api/auth/user/verify",
             data: {
                 otp: data.otp,
                 userId: id
@@ -35,7 +35,7 @@ export const resendOtp = async ():Promise<void> => {
         const id = await getToken();
          await axios({
             method: "POST",
-            url:"http://localhost:3000/api/auth/user/resendotp",
+            url:"https://team-project-livid.vercel.app/api/auth/user/resendotp",
             data: {
                 userId: id
             },
