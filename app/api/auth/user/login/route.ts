@@ -22,7 +22,7 @@ const userLoginHandler = async (req: NextRequest) => {
         $or: [{email: identifier}, {addharCard: identifier}]
     }) as IUser;
 
-    if (!isUserExist) return Response.json(new AppResponse("", "User not found", true, 400));
+    if (!isUserExist) throw new AppError("Invalid credentials", 401, false, "Invalid credentials");
 
     const comparePassword = await bcrypt.compare(String(password), isUserExist.password);
 
