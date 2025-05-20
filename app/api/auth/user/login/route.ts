@@ -32,7 +32,10 @@ const userLoginHandler = async (req: NextRequest) => {
     const otp = generateOTP();
     const otpExpires = new Date(Date.now() + 1000 * 60 * 5);
 
-    const refreshToken = jwt.sign({_id: isUserExist._id, email: isUserExist.email}, process.env.SECRET_KEY || "", {expiresIn: "1d"});
+    const refreshToken = jwt.sign({
+        _id: isUserExist._id,
+        email: isUserExist.email
+    }, process.env.SECRET_KEY || "", {expiresIn: "1d"});
     const accessToken = jwt.sign({_id: isUserExist._id}, process.env.SECRET_KEY || "", {expiresIn: "1h"});
 
     isUserExist.verificationCode = otp;
@@ -46,7 +49,11 @@ const userLoginHandler = async (req: NextRequest) => {
 
     if (!msgRes.flag) throw new AppError("something wants wrong, please try again later", 500, false, "User not found");
 
-    return Response.json(new AppResponse({accessToken, refreshToken}, "User logged in successfully", true, 200))
+    return Response.json(new AppResponse({
+        accessToken,
+        refreshToken,
+        role: isUserExist.role
+    }, "User logged in successfully", true, 200))
 }
 
 export const POST = asyncHandler(userLoginHandler)

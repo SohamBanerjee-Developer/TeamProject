@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { AppError } from "@/app/_utils";
 import {cookies} from "next/headers";
 import jwt from "jsonwebtoken";

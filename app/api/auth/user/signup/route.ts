@@ -20,13 +20,14 @@ const userLoginHandler = async (req: NextRequest): Promise<Response> => {
     const address = data.get("address")?.toString();
     const email = data.get("email")?.toString();
     const password = data.get("password")?.toString();
+    const role = data.get("role") as "user" | "owner";
 
     if ([fullName,
         phoneNumber,
         addharCard,
         address,
         email,
-        password].some((item) => item?.trim() === "")) {
+        password, role].some((item) => item?.trim() === "")) {
         throw new AppError("All fields are required!", 401, false, "Fields is required");
     }
 
@@ -48,7 +49,8 @@ const userLoginHandler = async (req: NextRequest): Promise<Response> => {
         addharCard,
         address,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        role,
     }) as IUser;
 
 

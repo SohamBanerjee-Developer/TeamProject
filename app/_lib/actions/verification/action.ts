@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import {getToken} from "@/app/_utils/helper";
+import {cookies} from "next/headers";
 
 export const verifyUser =  async (data:  { otp: string}):Promise<void> => {
     try {
@@ -41,6 +42,12 @@ export const resendOtp = async ():Promise<void> => {
             headers: {
                 "Content-Type": "application/json"
             }
+        });
+        const cookie = await cookies();
+        cookie.set("verify", "true", {
+            path: "/",
+            httpOnly: true,
+            sameSite: "strict",
         });
 
     }catch (e: unknown) {
