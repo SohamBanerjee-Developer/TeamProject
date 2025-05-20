@@ -9,23 +9,23 @@ export const userLogin = async (fromData: FormData): Promise<{ error?: string }>
         body: fromData,
     })
 
-    const {data} = await res.json()
+    const resData = await res.json();
 
-    if (!data.accessToken) {
+    if (!resData.flag) {
         return {error: "Invalid credentials"}
     }
 
 
     const cookieStore = await cookies();
 
-    cookieStore.set("accessToken", data.accessToken, {
+    cookieStore.set("accessToken", resData.data.accessToken, {
         maxAge: 60 * 60 * 24 * 30, // 30 days
         path: "/",
         httpOnly: true,
         sameSite: "strict",
     });
 
-    cookieStore.set("role", data.role, {
+    cookieStore.set("role",resData.data.role, {
         path: "/",
         httpOnly: true,
         sameSite: "strict",
@@ -38,6 +38,7 @@ export const userLogin = async (fromData: FormData): Promise<{ error?: string }>
  * Registers a user by sending signup data to the API.
  * Redirects to login page on success.
  */
+
 export const userSignup = async (data: FormData): Promise<{ error?: string }> => {
     const res = await fetch("https://team-project-livid.vercel.app/api/auth/user/signup", {
         method: "POST",

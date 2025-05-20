@@ -14,20 +14,20 @@ export const asyncHandler = <T extends any[] = any>(fn: AsyncHandler<T>): AsyncH
         } catch (error: unknown) {
             if (error instanceof AppError) {
                 return Response.json(
-                    { success: false, message: error.message },
+                    { flag: false, message: error.message },
                     { status: error.code }
                 );
             }
 
             if (error instanceof Error) {
                 return Response.json(
-                    { success: false, message: error.message },
+                    { flag: false, message: error.message },
                     { status: 500 }
                 );
             }
 
             return Response.json(
-                { success: false, message: "Unknown error occurred" },
+                { flag: false, message: "Unknown error occurred" },
                 { status: 500 }
             );
         }
