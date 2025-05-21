@@ -11,8 +11,7 @@ export const userLogin = async (fromData: FormData): Promise<{ error?: string }>
 
     const resData = await res.json();
 
-
-    if (resData.code === 401 || resData.code === 400) {
+    if (resData.code === 401 || resData.code === 400 || resData.flag === false) {
         return {error: resData.message || "Invalid credentials"};
     }
 
@@ -48,8 +47,9 @@ export const userSignup = async (data: FormData): Promise<{ error?: string }> =>
 
     const resData = await res.json();
 
-    if (resData.code === 401 || resData.code === 400) {
+    if (resData.code === 401 || resData.code === 400 || resData.flag === false) {
         return {error: resData.message || "Invalid credentials"};
     }
+
     redirect("/auth/login");
 };

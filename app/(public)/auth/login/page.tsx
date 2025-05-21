@@ -20,8 +20,7 @@ const Page = () => {
         const getRes = await userLogin(data);
         
         if (getRes.error) {
-            toast.error(getRes.error);
-            return
+          toast.error(getRes.error);
         }
     }
 

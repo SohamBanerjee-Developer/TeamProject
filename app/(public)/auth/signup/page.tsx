@@ -15,6 +15,7 @@ const Page = () => {
         e.preventDefault();
         const data = new FormData(e.target as HTMLFormElement);
         const getRes = await userSignup(data);
+
         if (getRes.error) {
            toast.error(getRes.error);
         }
