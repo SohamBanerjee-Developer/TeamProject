@@ -8,17 +8,21 @@ import Link from "next/link";
 import FormButton from "@/app/_components/FormButton";
 import {userSignup} from "@/app/_lib/actions/Authentication/action";
 import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
 
 const Page = () => {
 
+    const router = useRouter();
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const data = new FormData(e.target as HTMLFormElement);
         const getRes = await userSignup(data);
 
-        if (getRes.error) {
+        if (getRes?.error) {
            toast.error(getRes.error);
+           return;
         }
+        router.push("/auth/login");
     }
 
     return (

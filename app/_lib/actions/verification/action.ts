@@ -5,7 +5,7 @@ import {getToken} from "@/app/_utils/helper";
 
 export const verifyUser =  async (data:  { otp: string}):Promise<void> => {
     const id = await getToken();
-    const res  = await fetch("https://team-project-livid.vercel.app/api/auth/user/verify",{
+    const res  = await fetch(`${process.env.DEPLOY_URL}/api/auth/user/verify`,{
         method: "POST",
         body: JSON.stringify({
             otp: data.otp,
@@ -25,7 +25,7 @@ export const verifyUser =  async (data:  { otp: string}):Promise<void> => {
 
 export const resendOtp = async ():Promise<void> => {
     const id = await getToken();
-    const res  = await fetch("https://team-project-livid.vercel.app/api/auth/user/resendotp",{
+    const res  = await fetch(`${process.env.DEPLOY_URL}/api/auth/user/resendotp`,{
         method: "POST",
         body: JSON.stringify({
             userId: id,

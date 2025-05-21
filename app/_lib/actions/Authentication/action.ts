@@ -1,10 +1,10 @@
 "use server";
 
 import {cookies} from "next/headers";
-import {redirect} from "next/navigation";
 
-export const userLogin = async (fromData: FormData): Promise<{ error?: string }> => {
-    const res = await fetch("https://team-project-livid.vercel.app/api/auth/user/login", {
+
+export const userLogin = async (fromData: FormData): Promise<{ error?: string } | void> => {
+    const res = await fetch(`${process.env.DEPLOY_URL}/api/auth/user/login`, {
         method: "POST",
         body: fromData,
     })
@@ -31,7 +31,6 @@ export const userLogin = async (fromData: FormData): Promise<{ error?: string }>
         sameSite: "strict",
     });
 
-    redirect("/");
 };
 
 /**
@@ -39,8 +38,8 @@ export const userLogin = async (fromData: FormData): Promise<{ error?: string }>
  * Redirects to login page on success.
  */
 
-export const userSignup = async (data: FormData): Promise<{ error?: string }> => {
-    const res = await fetch("https://team-project-livid.vercel.app/api/auth/user/signup", {
+export const userSignup = async (data: FormData): Promise<{ error?: string } | void> => {
+    const res = await fetch(`${process.env.DEPLOY_URL}/api/auth/user/signup`, {
         method: "POST",
         body: data,
     })
@@ -51,5 +50,4 @@ export const userSignup = async (data: FormData): Promise<{ error?: string }> =>
         return {error: resData.message || "Invalid credentials"};
     }
 
-    redirect("/auth/login");
 };

@@ -9,9 +9,10 @@ import Link from "next/link";
 import FormButton from "@/app/_components/FormButton";
 import {userLogin} from "@/app/_lib/actions/Authentication/action";
 import {toast} from "react-toastify";
-
+import {useRouter} from "next/navigation";
 
 const Page = () => {
+   const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,9 +20,11 @@ const Page = () => {
 
         const getRes = await userLogin(data);
         
-        if (getRes.error) {
+        if (getRes?.error) {
           toast.error(getRes.error);
+          return;
         }
+        router.push("/")
     }
 
     return (
