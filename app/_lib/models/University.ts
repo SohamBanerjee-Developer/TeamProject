@@ -7,6 +7,7 @@ export interface IUniversity extends Document {
     coverImage: string;
     description: string;
     governmentId: string;
+    afflitatedBy: string;
 }
 
 const UniversitySchema: Schema<IUniversity> = new Schema(
@@ -16,6 +17,7 @@ const UniversitySchema: Schema<IUniversity> = new Schema(
         coverImage: { type: String, required: true },
         description: { type: String, required: true },
         governmentId: { type: String, required: true },
+        afflitatedBy: { type: String, required: true },
     },
     {
         timestamps: true,

@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from "next/image";
 
 type University = {
     _id: string;
@@ -26,7 +27,7 @@ const Page = async ({params}: { params: Promise<{ university: string }> }) => {
             key={resUniversity._id}
             className="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden my-6 md:flex md:items-center"
         >
-            <img
+            <Image
                 src={resUniversity.coverImage}
                 alt={`${resUniversity.name} cover`}
                 className="w-full h-48 object-cover md:w-64 md:h-full"
