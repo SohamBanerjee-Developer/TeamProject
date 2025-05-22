@@ -15,7 +15,7 @@ const Page = async ({params}: { params: Promise<{ university: string }> }) => {
 
     const {university} = await params;
     const res = await fetch(
-        `http://localhost:3000/api/university/getuniversitybyid?identifier=${encodeURIComponent(university)}`,
+        `https://team-project-xi-two.vercel.app/api/university/getuniversitybyid?identifier=${encodeURIComponent(university)}`,
     )
 
     const resData = await res.json();

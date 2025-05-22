@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import List from "@/app/_components/List";
 import UniversityCard from "@/app/_components/Home/UniversityCard";
 
+
 const Search = () => {
 
     const [search, setSearch] = useState<string>("");
@@ -29,9 +30,10 @@ const Search = () => {
             setLoading(true);
             try {
                 const res = await fetch(
-                    `http://localhost:3000/api/university/searchbynameorid?identifier=${encodeURIComponent(search)}`,
+                    `https://team-project-xi-two.vercel.app/api/university/searchbynameorid?identifier=${encodeURIComponent(search)}`,
                     {signal: controller.signal}
-                )
+                );
+                console.log(res)
 
                 const resData = await res.json();
                 if (!resData.flag) throw new Error(resData.message);
@@ -69,7 +71,8 @@ const Search = () => {
                 />
                 <p>{loading ? "loading..." : "waiting for search"}</p>
             </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center max-w-2xl mx-auto mb-6 overflow-x-hidden overflow-y-scroll scrollbar-hide">
+            <div
+                className="flex flex-col sm:flex-row items-center gap-4 justify-center max-w-2xl mx-auto mb-6 overflow-x-hidden overflow-y-scroll scrollbar-hide">
                 {
                     data &&
                     <List data={data} render={(item) => <UniversityCard university={item} key={item.governmentId}/>}/>
