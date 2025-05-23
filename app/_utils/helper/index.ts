@@ -1,9 +1,7 @@
 /* eslint-disable */
 
 import { AppError } from "@/app/_utils";
-import {cookies} from "next/headers";
-import jwt from "jsonwebtoken";
-import {redirect} from "next/navigation";
+
 
 type AsyncHandler<T extends any[] = any> = (...args: T) => Promise<Response>;
 
@@ -39,14 +37,3 @@ export const generateOTP = (): string => {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-export const getToken = async ():Promise<string> => {
-    try {
-        const cookie = await cookies();
-        const {_id} = jwt.verify((cookie.get("accessToken")?.value) || "", process.env.SECRET_KEY || "") as {_id: string};
-
-        return _id;
-    }catch (e: unknown) {
-        console.log(e);
-        redirect("/auth/login")
-    }
-}
