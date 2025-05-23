@@ -1,10 +1,10 @@
-import type {NextRequest} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import bcrypt from "bcryptjs";
 import {AppError, AppResponse} from "@/app/_utils";
 import {IUser, User} from "@/app/_lib/models/User";
 import {asyncHandler} from "@/app/_utils/helper";
 import {databaseConnection} from "@/app/_lib/db/database";
-import {decryptUserId, encryptToken, verifyToken} from "@/app/_utils/jose/helper";
+import { encryptToken, } from "@/app/_utils/jose/helper";
 
 const userLoginHandler = async (req: NextRequest) => {
     await databaseConnection();
@@ -38,12 +38,25 @@ const userLoginHandler = async (req: NextRequest) => {
 
 
     await isUserExist.save({validateBeforeSave: false});
+     const res =  NextResponse.json(new AppResponse({
+         accessToken,
+         refreshToken,
+         role: isUserExist.role
+     }, "User logged in successfully", true, 200))
 
-    return Response.json(new AppResponse({
-        accessToken,
-        refreshToken,
-        role: isUserExist.role
-    }, "User logged in successfully", true, 200))
+    res.cookies.set("accessToken", accessToken, {
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+    })
+
+    return res;
+    // return Response.json(new AppResponse({
+    //     accessToken,
+    //     refreshToken,
+    //     role: isUserExist.role
+    // }, "User logged in successfully", true, 200))
 }
 
 export const POST = asyncHandler(userLoginHandler)
