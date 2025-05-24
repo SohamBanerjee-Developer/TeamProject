@@ -39,7 +39,7 @@ const createPost = async (req: NextRequest) => {
     })
 
     if (checkIsDuplicate) {
-        throw new AppError("Post already exist!", 308, false, "Post already exist");
+        throw new AppError("Post already exist!", 400, false, "Post already exist");
     }
 
     const createPost = await HomeStay.create({
