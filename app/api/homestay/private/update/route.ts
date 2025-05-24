@@ -1,0 +1,143 @@
+import { asyncHandler } from "@/app/_utils/helper";
+import { AppError, AppResponse } from "@/app/_utils";
+import { NextRequest } from "next/server";
+import { HomeStay, IHome } from "@/app/_lib/models/HomeStay";
+import { databaseConnection } from "@/app/_lib/db/database";
+import { ObjectId } from "mongodb";
+
+const updatePost = async (req: NextRequest) => {
+    await databaseConnection();
+
+    const user_id = req.headers.get("user_id") as string;
+    if (!user_id) {
+        throw new AppError(
+            "Invalid request, please provide all fields and must be authenticated",
+            400
+        );
+    }
+
+
+
+
+    const {
+        tittle,
+        details,
+        caption,
+        rent,
+        maxRoom,
+        associateUniversity,
+        location,
+        thumbnail,
+        houseNumber,
+        postId
+    } = (await req.json()) as IHome;
+
+    if (!postId) {
+        throw new AppError("Invalid or missing post ID", 400);
+    }
+    // Validate required fields
+    if ([tittle, details, caption, location, houseNumber].some((item) => item.trim() === "")) {
+        throw new AppError("Invalid data", 400);
+    }
+
+    if (!maxRoom || !rent || !thumbnail || !associateUniversity) {
+        throw new AppError("Must provide required fields", 400);
+    }
+
+    // Check if post exists and belongs to the user
+    const existingPost = await HomeStay.findOne({ _id: new ObjectId(postId) });
+    if (!existingPost) {
+        throw new AppError("Post not found", 404);
+    }
+    if (existingPost.ownerId.toString() !== user_id) {
+        throw new AppError("Unauthorized to update this post", 403);
+    }
+
+    // Check for duplicates excluding current post
+    const duplicatePost = await HomeStay.findOne({
+        _id: { $ne: new ObjectId(postId) },
+        associateUniversity: new ObjectId(String(associateUniversity)),
+        houseNumber,
+    });
+
+    if (duplicatePost) {
+        throw new AppError("Another post with this university and house number already exists", 400);
+    }
+
+    // Update the post
+    const updated = await HomeStay.findOneAndUpdate(
+        { _id: new ObjectId(postId) },
+        {
+            $set: {
+                tittle,
+                details,
+                caption,
+                rent,
+                maxRoom,
+                associateUniversity: new ObjectId(String(associateUniversity)),
+                location,
+                thumbnail,
+                houseNumber,
+            },
+        },
+        { returnDocument: "after" }
+    );
+
+    if (!updated) {
+        throw new AppError("Failed to update post", 500);
+    }
+
+    // Aggregate to populate owner and university details
+    const postResponse = await HomeStay.aggregate([
+        { $match: { _id: updated._id } },
+        {
+            $lookup: {
+                from: "users",
+                localField: "ownerId",
+                foreignField: "_id",
+                as: "owner",
+            },
+        },
+        {
+            $lookup: {
+                from: "universities",
+                localField: "associateUniversity",
+                foreignField: "_id",
+                as: "university",
+            },
+        },
+        { $unwind: "$owner" },
+        { $unwind: "$university" },
+        {
+            $project: {
+                _id: 1,
+                tittle: 1,
+                details: 1,
+                caption: 1,
+                rent: 1,
+                maxRoom: 1,
+                associateUniversity: 1,
+                location: 1,
+                thumbnail: 1,
+                houseNumber: 1,
+                owner: {
+                    _id: 1,
+                    fullName: 1,
+                    email: 1,
+                    phoneNumber: 1,
+                    isVerified: 1,
+                },
+                university: {
+                    _id: 1,
+                    name: 1,
+                },
+            },
+        },
+    ]);
+
+    return Response.json(
+        new AppResponse(postResponse[0], "Post updated successfully", true, 200)
+    );
+};
+
+export const PUT = asyncHandler(updatePost);

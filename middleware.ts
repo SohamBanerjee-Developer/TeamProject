@@ -17,7 +17,6 @@ export async function middleware(request: NextRequest) {
             try {
                 validSession = await decryptUserId(token);
             } catch {
-
                 validSession = null;
             }
         }
@@ -51,5 +50,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/auth/:path*", "/api/post/private/:path*", "/api/university/:path*", "/home/:path*"],
+    matcher: ["/auth/:path*", "/api/homestay/private/:path*", "/api/university/:path*", "/home/:path*", "/api/upvote"],
 };

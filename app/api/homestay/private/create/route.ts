@@ -10,6 +10,8 @@ const createPost = async (req: NextRequest) => {
     await databaseConnection();
 
     const user_id = req.headers.get("user_id") as string;
+
+
     if (!user_id) {
         throw new AppError("Invalid request, please provide all fields And must be authenticate", 400);
     }
@@ -95,6 +97,7 @@ const createPost = async (req: NextRequest) => {
                 associateUniversity: 1,
                 location: 1,
                 thumbnail: 1,
+                houseNumber: 1,
                 owner: {
                     _id: 1,
                     fullName: 1,
