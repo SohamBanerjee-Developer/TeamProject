@@ -1,43 +1,55 @@
-import {NextRequest, NextResponse} from "next/server";
-import {cookies} from "next/headers";
-import {decryptUserId} from "@/app/_utils/jose/helper";
-
+import { NextRequest, NextResponse } from "next/server";
+// Removed import { cookies } from "next/headers" because it's not usable in middleware
+import { decryptUserId } from "@/app/_utils/jose/helper";
+import {JwtPayload} from "jsonwebtoken";
 
 export async function middleware(request: NextRequest) {
     try {
         const pathname = request.nextUrl.pathname;
         const isPublicRoute = pathname.startsWith("/auth");
 
-        const store = await cookies();
-        const token = store.get("accessToken")?.value as string;
+        // Get token from cookies in middleware
+        const token = request.cookies.get("accessToken")?.value || "";
 
-        const validSession = await decryptUserId(token) as { _id: string, email: string, iat: number, exp: number };
+        let validSession: { _id: string; email: string; iat: number; exp: number } | null | JwtPayload = null;
 
-        // ✅ If a user is logged in and trying to access /auth routes, redirect to home
-        if (validSession._id && isPublicRoute) {
+        if (token) {
+            try {
+                validSession = await decryptUserId(token);
+            } catch {
+
+                validSession = null;
+            }
+        }
+
+        // Redirect logged-in users away from /auth routes to home
+        if (validSession?._id && isPublicRoute) {
             return NextResponse.redirect(new URL("/", request.nextUrl));
         }
 
-        // ⛔️ If a user is NOT logged in and trying to access protected routes, redirect to login
-        if (!validSession._id && !isPublicRoute) {
+        // Redirect unauthenticated users trying to access protected routes to login
+        if (!validSession?._id && !isPublicRoute) {
             return NextResponse.redirect(new URL("/auth/login", request.nextUrl));
         }
 
-        const newheader = new Headers(request.headers);
-        newheader.set("user_id", String(validSession._id));
+        // Add user_id header for authenticated requests
+        if (validSession?._id) {
+            const newHeaders = new Headers(request.headers);
+            newHeaders.set("user_id", validSession?._id);
 
-        return NextResponse.next({
-            headers: newheader
-        });
+            return NextResponse.next({
+                headers: newHeaders,
+            });
+        }
 
-    } catch (e: unknown) {
-        const err = e as Error;
-        console.log(err.message);
+        // For public routes and no session, just continue
+        return NextResponse.next();
+    } catch (error) {
+        console.error("middleware error:", error);
         return NextResponse.redirect(new URL("/auth/login", request.nextUrl));
-
     }
 }
 
 export const config = {
-    matcher: ["/auth/:path*", "/api/post/private/:path*"], // Adjust this to match all protected routes
+    matcher: ["/auth/:path*", "/api/post/private/:path*", "/api/university/:path*", "/home/:path*"],
 };
