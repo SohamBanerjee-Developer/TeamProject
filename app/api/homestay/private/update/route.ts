@@ -5,6 +5,10 @@ import { HomeStay, IHome } from "@/app/_lib/models/HomeStay";
 import { databaseConnection } from "@/app/_lib/db/database";
 import { ObjectId } from "mongodb";
 
+interface reqJson extends IHome {
+    postId: string;
+}
+
 const updatePost = async (req: NextRequest) => {
     await databaseConnection();
 
@@ -15,9 +19,6 @@ const updatePost = async (req: NextRequest) => {
             400
         );
     }
-
-
-
 
     const {
         tittle,
@@ -30,7 +31,7 @@ const updatePost = async (req: NextRequest) => {
         thumbnail,
         houseNumber,
         postId
-    } = (await req.json()) as IHome;
+    } = (await req.json()) as reqJson;
 
     if (!postId) {
         throw new AppError("Invalid or missing post ID", 400);

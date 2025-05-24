@@ -39,8 +39,58 @@ const searchUniversity = async (req: NextRequest) => {
             }
         },
         {
+            $lookup: {
+                from: "upvotes",
+                localField: "_id",
+                foreignField: "postId",
+                as: "upvote"
+            }
+        },
+        {
+            $lookup: {
+                from: "comments",
+                localField: "_id",
+                foreignField: "postId",
+                as: "review",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "upvotes",
+                            localField: "_id",
+                            foreignField: "postId",
+                            as: "upvote"
+                        }
+                    },
+                    {
+                        $addFields: {
+                            commentUpvotes: {$size: "$upvote"}
+                        }
+                    },
+                    {
+
+                        $project: {
+                            _id: 1,
+                            userId: 1,
+                            postId: 1,
+                            postModel: 1,
+                            body: 1,
+                            createdAt: 1,
+                            updatedAt: 1,
+                            commentUpvotes: 1
+                        }
+                    }
+                ]
+            }
+        },
+        {
             $unwind: {
                 path: "$owner",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $unwind: {
+                path: "$university",
                 preserveNullAndEmptyArrays: true
             }
         },
@@ -73,6 +123,8 @@ const searchUniversity = async (req: NextRequest) => {
                     _id: 1,
                     name: 1,
                 },
+                totalUpvotes: {$size: "$upvote"},
+                review: 1
             }
         }])
 

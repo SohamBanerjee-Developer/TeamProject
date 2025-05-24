@@ -7,14 +7,14 @@ import {HomeStay} from "@/app/_lib/models/HomeStay";
 const getHomeStay = async (req: NextRequest) => {
     await databaseConnection();
 
-    const { searchParams } = new URL(req.url);
+    const {searchParams} = new URL(req.url);
 
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
 
     const Homestays = await HomeStay.aggregate([
-            { $skip: (page - 1) * limit },
-            { $limit: limit },
+            {$skip: (page - 1) * limit},
+            {$limit: limit},
             {
                 $lookup: {
                     from: "users",
@@ -29,6 +29,14 @@ const getHomeStay = async (req: NextRequest) => {
                     localField: "associateUniversity",
                     foreignField: "_id",
                     as: "university"
+                }
+            },
+            {
+                $lookup: {
+                    from: "upvotes",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "upvote"
                 }
             },
             {
@@ -48,9 +56,10 @@ const getHomeStay = async (req: NextRequest) => {
                     tittle: 1,
                     caption: 1,
                     rent: 1,
-                    thumbnail:1,
+                    thumbnail: 1,
                     university: "$university.name",
-                    ownername: "$owner.fullName"
+                    ownername: "$owner.fullName",
+                    upvoteCount: {$size: "$upvote"}
                 }
             }
         ]
