@@ -4,7 +4,7 @@ import {cookies} from "next/headers";
 
 
 export const userLogin = async (fromData: FormData): Promise<{ error?: string } | void> => {
-    const res = await fetch(`http://localhost:3000/api/auth/user/login`, {
+    const res = await fetch(`${process.env.DEPLOY_URL}/api/auth/user/login`, {
         method: "POST",
         body: fromData,
     })

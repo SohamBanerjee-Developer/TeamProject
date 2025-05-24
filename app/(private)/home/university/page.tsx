@@ -19,7 +19,7 @@ const Universities = () => {
         async function fetchData() {
             setLoading(true);
             try {
-                const res = await fetch(`http://localhost:3000/api/university/getalluniversities?page=${page}&limit=${limit}`, {signal: abort.signal});
+                const res = await fetch(`${process.env.DEPLOY_URL}/api/university/getalluniversities?page=${page}&limit=${limit}`, {signal: abort.signal});
 
                 const resData = await res.json();
 
