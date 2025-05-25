@@ -5,7 +5,7 @@ import {IUniversity} from "@/app/_lib/models/University";
 import {toast} from "react-toastify";
 
 import List from "@/app/_components/List";
-import UniversityCard from "@/app/_components/Home/UniversityCard";
+
 import SearchCard from "@/app/_components/Home/SearchCard";
 
 

@@ -6,7 +6,7 @@ import {Suspense} from "react";
 import Loading from "@/app/_components/Loading";
 import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Session from "@/app/_components/Session";
+
 
 const spaceGrotesk = Space_Grotesk({
         subsets: ["latin"],
@@ -39,7 +39,7 @@ export default function AuthLayout({
         >
 
         <MobileNav>
-        <Session/>
+<></>
         </MobileNav>
 
         <Suspense fallback={<Loading/>}>

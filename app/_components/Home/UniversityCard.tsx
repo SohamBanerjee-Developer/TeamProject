@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { IUniversity } from "@/app/_lib/models/University";
-import vercelSvg from '@/public/vercel.svg'; // Assuming this is your placeholder image
+
 
 export default function UniversityCard({ university }: { university: IUniversity }) {
     return (
