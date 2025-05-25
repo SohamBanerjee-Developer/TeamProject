@@ -13,6 +13,7 @@ function escapeRegex(str: string): string {
 
 const searchUniversity = async (req: NextRequest) => {
     await databaseConnection();
+    console.log(req.headers.get("user_id"))
 
     const {searchParams} = new URL(req.url);
     const identifier = searchParams.get("identifier");

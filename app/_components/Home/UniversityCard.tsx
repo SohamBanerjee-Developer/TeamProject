@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { IUniversity } from "@/app/_lib/models/University";
-import vercelSvg from '@/public/vercel.svg'; // Assuming this is your placeholder image
+
 
 export default function UniversityCard({ university }: { university: IUniversity }) {
     return (
@@ -13,7 +13,7 @@ export default function UniversityCard({ university }: { university: IUniversity
             >
                 <div className="relative max-h-[15rem] sm:max-h-[18rem] md:max-h-[20rem] w-full overflow-hidden p-2 border-2 border-gray-600 rounded-lg">
                     <Image
-                        src={ vercelSvg} // Use actual coverImage if available, fallback to vercelSvg
+                        src={university.coverImage} // Use actual coverImage if available, fallback to vercelSvg
                         alt={university.name}
                         className="w-full h-40 sm:h-48 md:h-52 object-cover relative" // Responsive height for the image
                         width={400} // Add appropriate width and height for Next/Image optimization

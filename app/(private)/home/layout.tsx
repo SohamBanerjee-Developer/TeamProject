@@ -42,6 +42,7 @@ const HomeLayout = ({children}: { children: React.ReactNode }) => {
                 {children}
               </Suspense>
             </main>
+
             <ToastContainer
                 position="top-center"
                 autoClose={5000}
