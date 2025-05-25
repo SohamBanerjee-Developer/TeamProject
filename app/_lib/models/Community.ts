@@ -3,13 +3,7 @@ import { string } from "zod";
 import { databaseConnection } from "../db/database";
 
 databaseConnection()
-export interface IComment extends Document {
-    userId: Schema.Types.ObjectId;
-    commentId: Schema.Types.ObjectId;
-    commentModel: "PGPost" | "Store" | "POST" | "Comment";
-    comment: string;
 
-}
 
 export interface post{
     userId: String;
@@ -41,24 +35,8 @@ export const hashtagSchema = new Schema<hashtag>({
     hashtag: {type: String, unique: true }
 })
 
-const commentSchema = new Schema<IComment>({
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
 
-    commentId: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        refPath: "commentModel"
-    },
-    commentModel: {
-        type: String,
-        required: true,
-        enum: ["PGPost", "Store", "Post", "Comment"]
-    },
 
-    comment: { type: String, required: true },
 
-}, {timestamps: true});
-
-export const Comment:Model<IComment> = model<IComment>("Comment", commentSchema);
 export const Post:Model<post> = model<post>("Post", postSchema);
 export const Hashtag:Model<hashtag> = model<hashtag>("Hashtag", hashtagSchema);

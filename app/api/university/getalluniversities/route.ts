@@ -7,7 +7,7 @@ import {databaseConnection} from "@/app/_lib/db/database";
 const getUniversities = async (req: NextRequest) => {
     await databaseConnection();
 
-    const { searchParams } = new URL(req.url);
+    const {searchParams} = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
 
