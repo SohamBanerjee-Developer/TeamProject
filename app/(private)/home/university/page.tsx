@@ -19,7 +19,10 @@ const Universities = () => {
         async function fetchData() {
             setLoading(true);
             try {
+
+ 
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/university/getalluniversities?page=${page}&limit=${limit}`, {signal: abort.signal});
+
 
                 const resData = await res.json();
 

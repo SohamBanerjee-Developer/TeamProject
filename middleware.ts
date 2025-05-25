@@ -1,8 +1,10 @@
+
 import {NextRequest, NextResponse} from "next/server";
 // Removed import { cookies } from "next/headers" because it's not usable in middleware
 import {decryptUserId} from "@/app/_utils/jose/helper";
 import {JwtPayload} from "jsonwebtoken";
 import {cookies} from "next/headers";
+
 
 export async function middleware(request: NextRequest) {
     try {
@@ -29,11 +31,13 @@ export async function middleware(request: NextRequest) {
 
         // Redirect unauthenticated users trying to access protected routes to login
         if (!validSession?._id && !isPublicRoute) {
+
             const cookieStore = await cookies();
             cookieStore.delete("accessToken");
             cookieStore.delete("role");
             return NextResponse.redirect(new URL("/auth/login", request.nextUrl));
         }
+
 
         if (validSession?._id) {
             const newHeaders = new Headers(request.headers);
@@ -54,4 +58,5 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
     matcher: ["/auth/:path*", "/api/homestay/private/:path*", "/home/university/:path+", "/api/upvote", "/api/comment/:path*"],
+
 };
