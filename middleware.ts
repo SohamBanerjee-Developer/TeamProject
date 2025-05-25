@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 // Removed import { cookies } from "next/headers" because it's not usable in middleware
-import { decryptUserId } from "@/app/_utils/jose/helper";
+import {decryptUserId} from "@/app/_utils/jose/helper";
 import {JwtPayload} from "jsonwebtoken";
+import {cookies} from "next/headers";
 
 export async function middleware(request: NextRequest) {
     try {
@@ -28,10 +29,12 @@ export async function middleware(request: NextRequest) {
 
         // Redirect unauthenticated users trying to access protected routes to login
         if (!validSession?._id && !isPublicRoute) {
+            const cookieStore = await cookies();
+            cookieStore.delete("accessToken");
+            cookieStore.delete("role");
             return NextResponse.redirect(new URL("/auth/login", request.nextUrl));
         }
 
-        // Add user_id header for authenticated requests
         if (validSession?._id) {
             const newHeaders = new Headers(request.headers);
             newHeaders.set("user_id", validSession?._id);
@@ -50,5 +53,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/auth/:path*", "/api/homestay/private/:path*", "/api/university/:path*", "/home/:path*", "/api/upvote", "/api/comment/:path*"],
+    matcher: ["/auth/:path*", "/api/homestay/private/:path*", "/home/university/:path+", "/api/upvote", "/api/comment/:path*"],
 };

@@ -6,6 +6,7 @@ import {toast} from "react-toastify";
 
 import List from "@/app/_components/List";
 import UniversityCard from "@/app/_components/Home/UniversityCard";
+import SearchCard from "@/app/_components/Home/SearchCard";
 
 
 const Search = () => {
@@ -30,7 +31,7 @@ const Search = () => {
             setLoading(true);
             try {
                 const res = await fetch(
-                    `https://team-project-xi-two.vercel.app/api/university/searchbynameorid?identifier=${encodeURIComponent(search)}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/university/searchbynameorid?identifier=${encodeURIComponent(search)}`,
                     {signal: controller.signal}
                 );
                 console.log(res)
@@ -62,7 +63,7 @@ const Search = () => {
 
     return (
         <div className="w-full flex-column relative overflow-hidden">
-            <div className="flex flex-col  items-center gap-4 justify-center max-w-2xl mx-auto mb-6">
+            <div className="flex flex-col  items-center gap-4 justify-center max-w-2xl mx-auto mb-6 py-1">
                 <input
                     type="text"
                     placeholder="Enter city, area, or landmark..."
@@ -71,11 +72,9 @@ const Search = () => {
                 />
                 <p>{loading ? "loading..." : "waiting for search"}</p>
             </div>
-            <div
-                className="flex flex-col sm:flex-row items-center gap-4 justify-center max-w-2xl mx-auto mb-6 overflow-x-hidden overflow-y-scroll scrollbar-hide">
+            <div className="relative w-full p-2 max-h-96 overflow-y-scroll gap-0.5 scrollbar-hide overflow-x-hidden">
                 {
-                    data &&
-                    <List data={data} render={(item) => <UniversityCard university={item} key={item.governmentId}/>}/>
+                    data.length > 0 && <List data={data} render={(item: IUniversity) => <SearchCard key={item.name} item={item}/>}/>
                 }
             </div>
         </div>

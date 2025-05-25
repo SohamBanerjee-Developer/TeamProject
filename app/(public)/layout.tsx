@@ -6,6 +6,7 @@ import {Suspense} from "react";
 import Loading from "@/app/_components/Loading";
 import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Session from "@/app/_components/Session";
 
 const spaceGrotesk = Space_Grotesk({
         subsets: ["latin"],
@@ -36,9 +37,11 @@ export default function AuthLayout({
         <body
             className={`${spaceGrotesk.className} ${funnelSans.className} h-dvh w-full relative antialiased dark-bg text-[#FFFDF6] `}
         >
-        <nav className="h-18 w-full relative overflow-hidden">
-            <MobileNav/>
-        </nav>
+
+        <MobileNav>
+        <Session/>
+        </MobileNav>
+
         <Suspense fallback={<Loading/>}>
             <main className="h-[calc(100%-4.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"> {children}</main>
         </Suspense>

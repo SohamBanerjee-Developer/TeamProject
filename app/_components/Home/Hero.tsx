@@ -13,7 +13,7 @@ const Hero = () => {
                     Your trusted student housing and travel companion — all in one place.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center gap-4 justify-center max-w-2xl mx-auto mb-6">
-                   <Search/>
+                    <Search/>
                 </div>
                 <Link href="/home/university" className="text-blue-700 font-semibold underline hover:text-blue-900">
                     Or browse all listings

@@ -14,11 +14,13 @@ type University = {
 const Page = async ({params}: { params: Promise<{ university: string }> }) => {
 
     const {university} = await params;
+
     const res = await fetch(
-        `https://team-project-xi-two.vercel.app/api/university/getuniversitybyid?identifier=${encodeURIComponent(university)}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/university/getuniversitybyid?identifier=${encodeURIComponent(university)}`,
     )
 
     const resData = await res.json();
+
     if (!resData.flag) throw new Error(resData.message);
     const resUniversity = resData.data as University;
 
@@ -32,6 +34,8 @@ const Page = async ({params}: { params: Promise<{ university: string }> }) => {
                 alt={`${resUniversity.name} cover`}
                 className="w-full h-48 object-cover md:w-64 md:h-full"
                 loading="lazy"
+               height={400}
+                width={400}
             />
             <div className="p-6 md:flex-1">
                 <h2 className="text-2xl font-semibold mb-2 text-gray-900">{resUniversity.name}</h2>
