@@ -38,9 +38,7 @@ export default function AuthLayout({
             className={`${spaceGrotesk.className} ${funnelSans.className} h-dvh w-full relative antialiased dark-bg text-[#FFFDF6] `}
         >
 
-        <MobileNav>
-<></>
-        </MobileNav>
+        <MobileNav/>
 
         <Suspense fallback={<Loading/>}>
             <main className="h-[calc(100%-4.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"> {children}</main>
