@@ -10,9 +10,12 @@ import FormButton from "@/app/_components/FormButton";
 import {userLogin} from "@/app/_lib/actions/Authentication/action";
 import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";
+import {useAuthSeesion} from "@/app/_components/context/AuthSession";
+
 
 const Page = () => {
    const router = useRouter();
+   const {dispatch} = useAuthSeesion();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,6 +27,7 @@ const Page = () => {
           toast.error(getRes.error);
           return;
         }
+        dispatch({type: "SET_AUTHENTICATED", payload: true});
         router.push("/")
     }
 

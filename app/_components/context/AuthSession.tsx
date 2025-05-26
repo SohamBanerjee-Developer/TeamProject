@@ -15,7 +15,7 @@ const initialState: AuthState = {
 };
 
 export type AuthAction =
-    | { type: 'SET_USER'; payload: string | null };
+    | { type: 'SET_USER'; payload: string | null } | { type: 'SET_AUTHENTICATED'; payload: boolean };
 
 function authReducer(state: AuthState, action: AuthAction): AuthState {
     switch (action.type) {
@@ -23,8 +23,12 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
             return {
                 ...state,
                 user: action.payload,
-                isAuthenticated: !!action.payload,
             };
+            case 'SET_AUTHENTICATED':
+                return {
+                    ...state,
+                    isAuthenticated: action.payload,
+                }
         default:
             return state;
     }
