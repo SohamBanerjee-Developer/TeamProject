@@ -41,9 +41,10 @@ const Page = async ({params}: { params: Promise<{homeId: string }>}) => {
     }
 
 
+
     return (
         <main className="max-w-3xl mx-auto p-4 md:p-8  shadow-lg rounded-lg my-8 relative">
-            <Edit id={data._id}/>
+            <Edit id={data.owner._id}/>
             {/* Thumbnail and Title */}
             <div className="flex flex-col md:flex-row gap-6 items-center mb-6">
                 <div className="relative w-full md:w-64 h-48 max-h-[200px] max-w-[200px] rounded-lg shadow overflow-hidden">

@@ -7,21 +7,21 @@ export function useAuthClient() {
     const [user, setUser] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const checkSession = useCallback(async () => {
-        setLoading(true);
-        const res = await userSession();
-        if (res?.userId) {
-            setUser(res.userId);
-        } else {
-            setUser(null);
-        }
-        setLoading(false);
-    }, []);
-
     useEffect(() => {
-        checkSession();
-    }, [checkSession]);
-
-    return { user, loading, isAuthenticated: !!user, checkSession, setUser };
+        (async() => {
+            setLoading(true);
+            try {
+                const res = await userSession();
+                if (res?.userId) {
+                    setUser(res.userId);
+                }
+            }catch{
+                setUser(null);
+            }finally {
+                setLoading(false)
+            }
+        })()
+    }, []);
+    return { user, loading, isAuthenticated: !!user};
 }
 
