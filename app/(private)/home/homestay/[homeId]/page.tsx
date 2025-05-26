@@ -13,17 +13,17 @@ type IReview = {
     commentUpvotes: number;
 }
 
-export async function generateStaticParams() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/homestay/public/genstaticprop`);
-
-    const resData = await res.json();
-
-    return resData.data.Homestays.map((homestay:HomeStayItem) => ({
-        params: {
-            homeId: homestay._id,
-        },
-    }));
-}
+// export async function generateStaticParams() {
+//     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/homestay/public/genstaticprop`);
+//
+//     const resData = await res.json();
+//
+//     return resData.data.Homestays.map((homestay:HomeStayItem) => ({
+//         params: {
+//             homeId: homestay._id,
+//         },
+//     }));
+// }
 const Page = async ({params}: { params: Promise<{homeId: string }>}) => {
     const {homeId} = await params;
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/homestay/public/getPostbyId?identifier=${encodeURIComponent(homeId)}`);
