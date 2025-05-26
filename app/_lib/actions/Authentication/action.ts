@@ -1,6 +1,8 @@
 "use server";
 
 import {cookies} from "next/headers";
+import {decryptUserId} from "@/app/_utils/jose/helper";
+import {redirect} from "next/navigation";
 
 
 export const userLogin = async (fromData: FormData): Promise<{ error?: string } | void> => {
@@ -51,3 +53,24 @@ export const userSignup = async (data: FormData): Promise<{ error?: string } | v
     }
 
 };
+
+export const userSession = async ():Promise<{userId:string} | null> => {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("accessToken")?.value || "";
+    let userValid: {userId:string} | null = null;
+    try {
+        const {_id} = await decryptUserId(accessToken);
+        userValid = {userId: _id};
+    }catch {
+        userValid = null;
+    }
+
+    return userValid;
+}
+
+export const userLogout = async ():Promise<void> => {
+    const cookieStore = await cookies();
+    cookieStore.delete("accessToken");
+    cookieStore.delete("role");
+    redirect("/auth/login");
+}
