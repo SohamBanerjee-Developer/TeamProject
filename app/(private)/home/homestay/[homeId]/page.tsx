@@ -4,7 +4,7 @@ import {toast} from "react-toastify";
 import Image from "next/image";
 import badeg from "@/public/badge.png";
 import UpvoteButton from "@/app/_components/Upvote";
-import {HomeStayItem} from "@/app/(private)/home/homestay/page";
+// import {HomeStayItem} from "@/app/(private)/home/homestay/page";
 
 type IReview = {
     _id: string;
