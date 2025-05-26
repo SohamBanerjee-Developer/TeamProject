@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {userSession} from "@/app/_lib/actions/Authentication/action";
 
 export function useAuthClient() {
