@@ -1,31 +1,135 @@
-import React from 'react'
+"use client"
+
+import {useState} from "react";
 import Link from "next/link";
-import {cookies} from "next/headers";
+import {userLogout} from "@/app/_lib/actions/Authentication/action";
+import {useAuthSeesion} from "@/app/_components/context/AuthSession";
+import {useRouter} from "next/navigation";
 
+export default function Navbar() {
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
-const HomeNav = async () => {
-    const cookieStore = await cookies();
-    const whoIam = cookieStore.get("role")?.value;
-
+    const toggleMenu = () => setMenuOpen(!menuOpen);
+    const {dispatch} = useAuthSeesion();
+    const router = useRouter();
     return (
-        <nav className="bg-blue-900 text-white h-12">
-            <div className="max-w-7xl mx-auto px-4 py-3 flex space-x-8">
-                <Link href="/" className="hover:text-blue-300 font-semibold">
-                    Home
+        <nav className="bg-blue-900 text-white h-12 ">
+            <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-full relative">
+                {/* Logo */}
+                <Link href="/" className="text-lg font-bold">
+                    StayFinder
                 </Link>
-                <Link href="/home/about" className="hover:text-blue-300 font-semibold">
-                    About
-                </Link>
+
+                {/* Three Dots Button (Mobile) */}
+                <button
+                    id="menu-toggle"
+                    className="md:hidden focus:outline-none"
+                    onClick={toggleMenu}
+                    aria-label="Toggle menu"
+                    aria-expanded={menuOpen}
+                >
+                    {/* Three vertical dots SVG */}
+                    <svg
+                        className="w-6 h-6 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M12 5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 7a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 7a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+                    </svg>
+                </button>
                 {
-                    whoIam === "owner" &&   <Link href="/home/uploadpg" className="hover:text-blue-300 font-semibold">
-                        For PG Owners
-                    </Link>
+                    menuOpen && <div
+                        id="menu"
+                        className={`md:hidden md:items-center md:space-x-8 absolute md:static top-full left-0 w-full md:w-auto bg-blue-900 md:bg-transparent p-4 md:p-0 z-50 transition-all duration-300 ease-in-out transform md:translate-y-0  ${
+                            menuOpen
+                                ? "opacity-100 pointer-events-auto translate-y-0"
+                                : "opacity-0 pointer-events-none -translate-y-2"
+                        }`}
+                    >
+                        <Link
+                            href="/"
+                            className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            Home
+                        </Link>
+                        <Link
+                            href="/home/about"
+                            className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            About
+                        </Link>
+                        <Link
+                            href="/home/university"
+                            className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            Universities
+                        </Link>
+                        <Link
+                            href="/home/homestay"
+                            className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            PG & Hotels
+                        </Link>
+                        <button className="font-bold cursor-pointer" onClick={async () => {
+
+                            const {flag} = await userLogout();
+                            if (flag) {
+                                dispatch({type: "SET_AUTHENTICATED", payload: false});
+                                router.push("/");
+                            }
+                        }}>Log out
+                        </button>
+                    </div>
                 }
-                <Link href="/community" className="hover:text-blue-300 font-semibold">
-                    Contact Us
-                </Link>
+                <div
+                    id="menu"
+                    className={`hidden md:flex md:items-center md:space-x-8 absolute md:static top-full left-0 w-full md:w-auto bg-blue-900 md:bg-transparent p-4 md:p-0 z-50 transition-all duration-300 ease-in-out transform md:translate-y-0`}
+                >
+                    <Link
+                        href="/"
+                        className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        Home
+                    </Link>
+                    <Link
+                        href="/home/about"
+                        className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        About
+                    </Link>
+                    <Link
+                        href="/home/university"
+                        className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        Universities
+                    </Link>
+                    <Link
+                        href="/home/homestay"
+                        className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        PG & Hotels
+                    </Link>
+                    <button className="font-bold cursor-pointer" onClick={async () => {
+
+                        const {flag} = await userLogout();
+                        if (flag) {
+                            dispatch({type: "SET_AUTHENTICATED", payload: false});
+                            router.push("/");
+                        }
+                    }}>Log out
+                    </button>
+                </div>
             </div>
         </nav>
-    )
+    );
 }
-export default HomeNav
