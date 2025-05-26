@@ -1,7 +1,6 @@
 import { object, z } from "zod";
 
 export const communityPostSchema = object({
-    title: z.string().optional(),
     body: z.string().optional(),
     documentUrl: z.string().optional(),
     hashtag: z.string().optional()

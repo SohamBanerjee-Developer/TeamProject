@@ -15,11 +15,10 @@ export const POST = asyncHandler(async (req: NextRequest)=>{
     }
     const userId =  req.headers.get('userId') as string;
     const universityId = req.headers.get('universityId') as string;
-    const {title, body, documentUrl, hashtag} = Body
+    const { body, documentUrl, hashtag} = Body
     await postModel.create({
         userId,
         universityId,
-        title,
         documentUrl,
         body,
         hashtag
@@ -43,10 +42,10 @@ export const PUT = asyncHandler(
     }
     const userId =  req.headers.get('userId') as string;
     const postId = req.headers.get('postId') as string;
-    const {title, body, documentUrl, hashtag} = Body;
+    const { body, documentUrl, hashtag} = Body;
     await postModel.updateOne({
         $and:[{_id: postId}, {userId: userId}]
-    },{title,body,documentUrl,hashtag})
+    },{body,documentUrl,hashtag})
         return NextResponse.json({
             message: " updated successfully"
         })

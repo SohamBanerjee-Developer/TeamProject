@@ -8,7 +8,6 @@ databaseConnection()
 export interface post{
     userId: Schema.Types.ObjectId;
     universityId: Schema.Types.ObjectId;
-    title: string;
     body: string;
     documentUrl: string;
     hashtags: string;
@@ -22,7 +21,6 @@ export interface hashtag{
 const postSchema = new Schema<post>({
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true, trim: true },
     universityId: { type: Schema.Types.ObjectId, ref: "University", required: true, trim: true },
-    title: {type: String},
     body: {type: String},
     documentUrl: {type: String},
     hashtags:[ {type: String, ref: "Hashtag" }]//suggest hashtags while posting
