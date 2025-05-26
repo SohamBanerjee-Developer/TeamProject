@@ -59,6 +59,7 @@ const getHomeStay = async (req: NextRequest) => {
                     thumbnail: 1,
                     university: "$university.name",
                     ownername: "$owner.fullName",
+                    ownerVerified: "$owner.isVerified",
                     upvoteCount: {$size: "$upvote"}
                 }
             }
