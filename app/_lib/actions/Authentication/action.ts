@@ -32,7 +32,6 @@ export const userLogin = async (fromData: FormData): Promise<{ error?: string } 
         httpOnly: true,
         sameSite: "strict",
     });
-
 };
 
 /**
