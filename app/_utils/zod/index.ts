@@ -1,4 +1,4 @@
-import { object, z } from "zod";
+import {  z } from "zod";
 
 const emailOrUsernameSchema = z.union([
     z.string().email("Invalid email"), // email validation

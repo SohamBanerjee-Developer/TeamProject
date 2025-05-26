@@ -1,13 +1,11 @@
 import { postModel } from "@/app/_lib/models/Community";
-import { AppError } from "@/app/_utils";
 import { asyncHandler } from "@/app/_utils/helper";
 import { communityPostSchema } from "@/app/_utils/zod/community";
-import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = asyncHandler(async (req: NextRequest)=>{
-    const Body = await req.json()
-    const parsedBody = communityPostSchema.safeParse(Body)
+    const Body = await req.json();
+    const parsedBody = communityPostSchema.safeParse(Body);
     if(!parsedBody.success){
         return NextResponse.json({
             message: "invalid inputs",
@@ -15,8 +13,8 @@ export const POST = asyncHandler(async (req: NextRequest)=>{
         })
         
     }
-    const userId =  req.headers.get('userId') as string
-    const universityId = req.headers.get('universityId') as string
+    const userId =  req.headers.get('userId') as string;
+    const universityId = req.headers.get('universityId') as string;
     const {title, body, documentUrl, hashtag} = Body
     await postModel.create({
         userId,
@@ -34,8 +32,8 @@ export const POST = asyncHandler(async (req: NextRequest)=>{
 
 export const PUT = asyncHandler(
     async (req: NextRequest)=>{
-        const Body = await req.json()
-    const parsedBody = communityPostSchema.safeParse(Body)
+        const Body = await req.json();
+    const parsedBody = communityPostSchema.safeParse(Body);
     if(!parsedBody.success){
         return NextResponse.json({
             message: "invalid inputs",
@@ -43,11 +41,12 @@ export const PUT = asyncHandler(
         })
         
     }
-    const userId =  req.headers.get('userId') as string
-    const universityId = req.headers.get('universityId') as string
-    const postId = req.headers.get('postId') as string
-    const {title, body, documentUrl, hashtag} = Body
-    await postModel.updateOne({_id:{postId}},{title,body,documentUrl,hashtag})
+    const userId =  req.headers.get('userId') as string;
+    const postId = req.headers.get('postId') as string;
+    const {title, body, documentUrl, hashtag} = Body;
+    await postModel.updateOne({
+        $and:[{_id: postId}, {userId: userId}]
+    },{title,body,documentUrl,hashtag})
         return NextResponse.json({
             message: " updated successfully"
         })
@@ -57,11 +56,10 @@ export const PUT = asyncHandler(
 export const DELETE = asyncHandler(
     async(req:NextRequest)=>{
         
-    const userId =  req.headers.get('userId') as string
-    const universityId = req.headers.get('universityId') as string
-    const postId = req.headers.get('postId') as string
+    const userId =  req.headers.get('userId') as string;
+    const postId = req.headers.get('postId') as string;
 
-    await postModel.deleteOne({_id:{postId}})
+    await postModel.deleteOne({$and:[{_id: postId}, {userId: userId}]})
         return NextResponse.json({
             message: "successfully deleted post"
         })
