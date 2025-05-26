@@ -4,7 +4,7 @@ import {toast} from "react-toastify";
 import Image from "next/image";
 import badeg from "@/public/badge.png";
 import UpvoteButton from "@/app/_components/Upvote";
-// import {HomeStayItem} from "@/app/(private)/home/homestay/page";
+import {HomeStayItem} from "@/app/(private)/home/homestay/page";
 
 type IReview = {
     _id: string;
@@ -13,20 +13,19 @@ type IReview = {
     commentUpvotes: number;
 }
 
-// export async function generateStaticParams() {
-//     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/homestay/public/genstaticprop`);
-//
-//     const resData = await res.json();
-//
-//     return resData.data.Homestays.map((homestay:HomeStayItem) => ({
-//         params: {
-//             homeId: homestay._id,
-//         },
-//     }));
-// }
+export async function generateStaticParams() {
+    const res = await fetch(`https://team-project-xi-two.vercel.app/api/homestay/public/genstaticprop`);
+
+    const resData = await res.json();
+
+    return resData.data.Homestays.map((home: HomeStayItem) => ({
+        homeId: String(home._id),
+    }));
+}
+
 const Page = async ({params}: { params: Promise<{homeId: string }>}) => {
     const {homeId} = await params;
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/homestay/public/getPostbyId?identifier=${encodeURIComponent(homeId)}`);
+    const res = await fetch(`https://team-project-xi-two.vercel.app/api/homestay/public/getPostbyId?identifier=${encodeURIComponent(homeId)}`);
 
     if (!res.ok) {
       redirect('/auth/login');
