@@ -2,13 +2,15 @@
 
 import { useState} from "react";
 import Link from "next/link";
-import {useAuthClient} from "@/app/_hooks/helper";
+import {userLogout} from "@/app/_lib/actions/Authentication/action";
+import {useAuthSeesion} from "@/app/_components/context/AuthSession";
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
     const toggleMenu = () => setMenuOpen(!menuOpen);
-    const{ user} = useAuthClient();
+    const {isAuthenticated} = useAuthSeesion();
+
     return (
         <nav className="bg-blue-900 text-white h-12 ">
             <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-full relative">
@@ -95,7 +97,7 @@ export default function Navbar() {
                        Universities
                     </Link>
                     {
-                        user ? <button>Log out</button> :  <Link
+                        isAuthenticated ? <button onClick={async () => {await userLogout()}}>Log out</button> :  <Link
                             href="/auth/login"
                             className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
                         >

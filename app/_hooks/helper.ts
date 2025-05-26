@@ -1,25 +1,27 @@
 'use client';
 
-import {useState, useEffect} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {userSession} from "@/app/_lib/actions/Authentication/action";
 
 export function useAuthClient() {
     const [user, setUser] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
+    const checkSession = useCallback(async () => {
         setLoading(true);
-        (async () => {
-            const validSession = await userSession();
-
-            if (validSession?.userId) {
-                setUser(validSession.userId);
-            }else{
-                setUser(null);
-            }
-            setLoading(false);
-        })()
+        const res = await userSession();
+        if (res?.userId) {
+            setUser(res.userId);
+        } else {
+            setUser(null);
+        }
+        setLoading(false);
     }, []);
 
-    return {user, loading};
+    useEffect(() => {
+        checkSession();
+    }, [checkSession]);
+
+    return { user, loading, isAuthenticated: !!user, checkSession, setUser };
 }
+
