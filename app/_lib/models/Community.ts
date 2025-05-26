@@ -38,5 +38,5 @@ export const hashtagSchema = new Schema<hashtag>({
 
 
 
-export const Post:Model<post> = model<post>("Post", postSchema);
-export const Hashtag:Model<hashtag> = model<hashtag>("Hashtag", hashtagSchema);
+export const postModel:Model<post> = model<post>("Post", postSchema);
+export const hashtagModel:Model<hashtag> = model<hashtag>("Hashtag", hashtagSchema);
