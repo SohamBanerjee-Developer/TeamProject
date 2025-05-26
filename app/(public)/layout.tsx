@@ -2,7 +2,8 @@ import type {Metadata} from "next";
 import {Space_Grotesk, Funnel_Sans} from "next/font/google";
 import "@/app/globals.css";
 import MobileNav from "@/app/_components/MobileNav";
-import { ToastContainer, Bounce } from 'react-toastify';
+import {ToastContainer, Bounce} from 'react-toastify';
+import {AuthSession} from "@/app/_components/context/AuthSession";
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -32,27 +33,31 @@ export default function AuthLayout({
 }>) {
     return (
         <html lang="en">
-        <body
-            className={`${spaceGrotesk.className} ${funnelSans.className} h-dvh w-full relative antialiased dark-bg text-[#FFFDF6] `}
-        >
+        <AuthSession>
+            <body
+                className={`${spaceGrotesk.className} ${funnelSans.className} h-dvh w-full relative antialiased dark-bg text-[#FFFDF6] `}
+            >
 
-        <MobileNav/>
+            <MobileNav/>
 
-        <main className="h-[calc(100%-4.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"> {children}</main>
-        <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick={false}
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-            transition={Bounce}
-        />
-        </body>
+            <main className="h-[calc(100%-4.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"> {children}</main>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+            />
+            </body>
+
+        </AuthSession>
+
         </html>
     );
 }
