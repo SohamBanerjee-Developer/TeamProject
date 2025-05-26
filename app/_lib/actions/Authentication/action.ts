@@ -2,7 +2,7 @@
 
 import {cookies} from "next/headers";
 import {decryptUserId} from "@/app/_utils/jose/helper";
-import {redirect} from "next/navigation";
+
 
 
 export const userLogin = async (fromData: FormData): Promise<{ error?: string } | void> => {
@@ -67,9 +67,9 @@ export const userSession = async ():Promise<{userId:string} | null> => {
     return userValid;
 }
 
-export const userLogout = async ():Promise<void> => {
+export const userLogout = async ():Promise<{ flag: boolean}> => {
     const cookieStore = await cookies();
     cookieStore.delete("accessToken");
     cookieStore.delete("role");
-    redirect("/auth/login");
+    return {flag: true}
 }

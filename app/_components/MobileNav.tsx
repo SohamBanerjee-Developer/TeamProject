@@ -4,13 +4,14 @@ import { useState} from "react";
 import Link from "next/link";
 import {userLogout} from "@/app/_lib/actions/Authentication/action";
 import {useAuthSeesion} from "@/app/_components/context/AuthSession";
+import {useRouter} from "next/navigation";
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
     const toggleMenu = () => setMenuOpen(!menuOpen);
-    const {isAuthenticated} = useAuthSeesion();
-
+    const {isAuthenticated, dispatch} = useAuthSeesion();
+    const router = useRouter();
     return (
         <nav className="bg-blue-900 text-white h-12 ">
             <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-full relative">
@@ -97,7 +98,14 @@ export default function Navbar() {
                        Universities
                     </Link>
                     {
-                        isAuthenticated ? <button onClick={async () => {await userLogout()}}>Log out</button> :  <Link
+                        isAuthenticated ? <button className="font-bold" onClick={async () => {
+
+                            const {flag} = await userLogout();
+                            if (flag) {
+                                dispatch({type: "SET_AUTHENTICATED", payload: false});
+                                router.push("/");
+                            }
+                        }}>Log out</button> :  <Link
                             href="/auth/login"
                             className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
                         >
