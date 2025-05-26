@@ -40,9 +40,7 @@ export default function AuthLayout({
 
         <MobileNav/>
 
-        <Suspense fallback={<Loading/>}>
-            <main className="h-[calc(100%-4.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"> {children}</main>
-        </Suspense>
+        <main className="h-[calc(100%-4.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"> {children}</main>
         <ToastContainer
             position="top-center"
             autoClose={5000}
