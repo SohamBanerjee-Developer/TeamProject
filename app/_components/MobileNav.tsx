@@ -69,7 +69,21 @@ export default function Navbar() {
                         >
                             Universities
                         </Link>
+                        {
+                            isAuthenticated ? <button className="font-bold" onClick={async () => {
 
+                                const {flag} = await userLogout();
+                                if (flag) {
+                                    dispatch({type: "SET_AUTHENTICATED", payload: false});
+                                    router.push("/");
+                                }
+                            }}>Log out</button> :  <Link
+                                href="/auth/login"
+                                className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
+                            >
+                                Log in
+                            </Link>
+                        }
                     </div>
                 }
                 <div
