@@ -2,8 +2,6 @@ import type {Metadata} from "next";
 import {Space_Grotesk, Funnel_Sans} from "next/font/google";
 import "@/app/globals.css";
 import MobileNav from "@/app/_components/MobileNav";
-import {Suspense} from "react";
-import Loading from "@/app/_components/Loading";
 import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
