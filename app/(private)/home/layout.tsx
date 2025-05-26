@@ -3,8 +3,6 @@ import {Space_Grotesk, Funnel_Sans} from "next/font/google";
 import "@/app/globals.css";
 import {ToastContainer, Bounce} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {Suspense} from "react";
-import Loading from "@/app/_components/Loading";
 import HomeNav from "@/app/_components/Home/HomeNav";
 
 const spaceGrotesk = Space_Grotesk({
@@ -38,9 +36,7 @@ const HomeLayout = ({children}: { children: React.ReactNode }) => {
         <HomeNav/>
 
             <main className="h-[calc(100%-4.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide">
-                <Suspense fallback={<Loading/>}>
                 {children}
-              </Suspense>
             </main>
 
             <ToastContainer
