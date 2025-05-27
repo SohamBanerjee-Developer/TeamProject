@@ -5,7 +5,7 @@ import React from "react";
 export default function universitynav({ params }: any) {
   return (
     <div className="flex flex-center">
-      <div className=" w-2/4 p-2 flex justify-between">
+      <div className=" w-2/4 p-2 flex justify-center gap-44">
         <Link
           href={{
             pathname: `/home/university/${params}/community`,
@@ -14,8 +14,7 @@ export default function universitynav({ params }: any) {
         >
           community
         </Link>
-        <Link href="">pg</Link>
-        <Link href="">homestay</Link>
+        <Link className="bg-red-600 p-2 rounded-md " href="/home/homestay">homestay</Link>
       </div>
     </div>
   );
