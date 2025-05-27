@@ -4,6 +4,7 @@ import {NextRequest} from "next/server";
 import {HomeStay, IHome} from "@/app/_lib/models/HomeStay";
 import {databaseConnection} from "@/app/_lib/db/database";
 import {ObjectId} from "mongodb";
+import {HomeStayData} from "@/app/_lib/actions/Edit/action";
 
 
 const createPost = async (req: NextRequest) => {
@@ -11,51 +12,56 @@ const createPost = async (req: NextRequest) => {
 
     const user_id = req.headers.get("user_id") as string;
 
-
     if (!user_id) {
         throw new AppError("Invalid request, please provide all fields And must be authenticate", 400);
     }
 
     const {
-        tittle,
+        title,
         details,
         caption,
         rent,
         maxRoom,
-        associateUniversity,
+        associatedUniversity,
         location,
         thumbnail,
         houseNumber
-    } = await req.json() as IHome;
+    } = await req.json() as HomeStayData;
 
-    if ([tittle, details, caption, location, houseNumber].some((item) => item.trim() === "")) {
+
+
+    if ([title, details, caption, location, houseNumber].some((item) => item.trim() === "")) {
         throw new AppError("Invalid data", 400);
     }
 
-    if (!maxRoom || !rent || !thumbnail || !associateUniversity) {
+
+    if (!maxRoom || !rent || !thumbnail || !associatedUniversity) {
         throw new AppError("Must be provided required fields", 400);
     }
-
+    //
     const checkIsDuplicate = await HomeStay.findOne({
-        $and: [{associateUniversity}, {houseNumber}]
+        $and: [{associatedUniversity}, {houseNumber}]
     })
 
     if (checkIsDuplicate) {
         throw new AppError("Post already exist!", 400, false, "Post already exist");
     }
 
+
     const createPost = await HomeStay.create({
-        tittle,
+        title,
         details,
         caption,
         rent,
         maxRoom,
-        associateUniversity: new ObjectId(String(associateUniversity)),
+        associatedUniversity: new ObjectId(String(associatedUniversity)),
         location,
         thumbnail,
         ownerId: new ObjectId(user_id),
         houseNumber
     }) as IHome;
+
+
 
     if (!createPost._id) {
         throw new AppError("Post not created! please try again later!", 500, false, "Post not created");

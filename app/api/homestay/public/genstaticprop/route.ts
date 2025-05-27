@@ -1,20 +1,13 @@
-import type {NextRequest} from "next/server";
+
 import {asyncHandler} from "@/app/_utils/helper";
 import {AppError, AppResponse} from "@/app/_utils";
 import {databaseConnection} from "@/app/_lib/db/database";
 import {HomeStay} from "@/app/_lib/models/HomeStay";
 
-const getHomeStay = async (req: NextRequest) => {
+const getHomeStay = async () => {
     await databaseConnection();
 
-    const {searchParams} = new URL(req.url);
-
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "10", 10);
-
     const Homestays = await HomeStay.aggregate([
-            {$skip: (page - 1) * limit},
-            {$limit: limit},
             {
                 $lookup: {
                     from: "users",
@@ -26,7 +19,7 @@ const getHomeStay = async (req: NextRequest) => {
             {
                 $lookup: {
                     from: "universities",
-                    localField: "associatedUniversity",
+                    localField: "associateUniversity",
                     foreignField: "_id",
                     as: "university"
                 }
@@ -53,7 +46,7 @@ const getHomeStay = async (req: NextRequest) => {
             },
             {
                 $project: {
-                    title: 1,
+                    tittle: 1,
                     caption: 1,
                     rent: 1,
                     thumbnail: 1,

@@ -12,7 +12,7 @@ type IThumbnail = {
 // };
 
 export interface IHome extends Document {
-    tittle: string;
+    title: string;
     caption: string;
     thumbnail: IThumbnail;
     photos?: IThumbnail[];
@@ -23,7 +23,7 @@ export interface IHome extends Document {
     houseNumber: string;
     location:string;
     ownerId: Schema.Types.ObjectId;
-    associateUniversity: Schema.Types.ObjectId;
+    associatedUniversity: Schema.Types.ObjectId;
 }
 
 
@@ -38,7 +38,7 @@ const ThumbnailSchema = new Schema<IThumbnail>({
 // }, { _id: false });
 
 const pgPostSchema = new Schema<IHome>({
-    tittle: { type: String, required: true },
+    title: { type: String, required: true },
     caption: { type: String, required: true },
     thumbnail: { type: ThumbnailSchema, required: true },
     photos: { type: [ThumbnailSchema]},
@@ -48,7 +48,7 @@ const pgPostSchema = new Schema<IHome>({
     location: { type: String, required: true },
     houseNumber: { type: String, required: true },
     ownerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    associateUniversity: { type: Schema.Types.ObjectId, ref: "University", required: true },
+    associatedUniversity: { type: Schema.Types.ObjectId, ref: "University", required: true },
 }, { timestamps: true });
 
 pgPostSchema.plugin(aggregatePaginate);
