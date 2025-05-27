@@ -25,8 +25,8 @@ export const POST = asyncHandler(async (req: NextRequest) => {
   const { body, documentUrl, hashtags, documentType } = Body;
 console.log("here2");
 
-  let hashtagIds:Types.ObjectId[] = []
-  if (hashtags){
+let hashtagIds:Types.ObjectId[] = []
+if (hashtags){
   await Promise.all( hashtags.map(async (hashtag:string) => {
     await hashtagModel.updateOne(
       { hashtag: hashtag }, // Filter
@@ -52,11 +52,12 @@ console.log(hashtagIds);
     body,
     hashtags: hashtagIds,
     documentType,
-  });}catch(e){
+  })
+  console.log(response);
+}catch(e){
     console.log(e);
     
   }
-console.log(response);
   return NextResponse.json({
     message: "suceesfully post is created",
   });

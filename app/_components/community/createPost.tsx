@@ -14,6 +14,7 @@ interface documentInfo{
 
 export default function createPost() {
     const [documentInfo, setDocumentInfo] = useState<documentInfo>()
+    const [isUrl, setIsUrl] = useState(false)
     const searchParams = useParams()
     const bodyRef = useRef<HTMLTextAreaElement>(null)  
     const {university} = searchParams
@@ -23,20 +24,25 @@ export default function createPost() {
     
     
     async function insertPost() {
-        if(bodyRef?.current?.value.match(/#\w+/g)){await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/Community/post`,{
+        
+        if(bodyRef?.current?.value.match(/#\w+/g)?.length){await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/Community/post`,{
             "body": bodyRef.current?.value,
             "documentUrl": documentInfo?.url,
             "documentType": documentInfo?.type,
-            "hashtags": bodyRef?.current?.value.match(/#\w+/g)
+            "hashtags": bodyRef?.current?.value.match(/#\w+/g)},{
+             headers:{
+                'universityId': university
+            }
         })}else{
-            axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/Community/post`,{
+           await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/Community/post`,{
             "body": bodyRef.current?.value,
             "documentUrl": documentInfo?.url,
-            "documentType": documentInfo?.type,
+            "documentType": documentInfo?.type},{
             headers:{
                 'universityId': university
             }
         })
+        setIsUrl(false)
         }
     }
   return (<>
@@ -72,6 +78,7 @@ export default function createPost() {
                                                         url: res.secure_url,
                                                         type: res.resource_type as "image"|"video"|"poll"
                                                        });
+                                                        setIsUrl(true)
                                                     }
                                                 }}
                     />
@@ -87,7 +94,7 @@ export default function createPost() {
                 </div>
 
                 {/* <!-- Media Preview --> */}
-                {documentInfo?.url && <MediaPreviewer documentType={documentInfo?.type} documentUrl={documentInfo?.url}/>}
+                {isUrl && <MediaPreviewer documentType={documentInfo?.type} documentUrl={documentInfo?.url}/>}
             </div>
         </div>
 

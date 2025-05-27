@@ -43,7 +43,7 @@ export default function postCard({
             
             {documentType === "image" ? (
               <img
-                src="${post.media.url}"
+                src={`${documentUrl}`}
                 alt="Post media"
                 className="w-full h-2/5 object-cover"
               />
