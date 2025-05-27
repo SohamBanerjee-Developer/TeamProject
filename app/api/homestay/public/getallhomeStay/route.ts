@@ -26,7 +26,7 @@ const getHomeStay = async (req: NextRequest) => {
             {
                 $lookup: {
                     from: "universities",
-                    localField: "associateUniversity",
+                    localField: "associatedUniversity",
                     foreignField: "_id",
                     as: "university"
                 }
@@ -53,7 +53,7 @@ const getHomeStay = async (req: NextRequest) => {
             },
             {
                 $project: {
-                    tittle: 1,
+                    title: 1,
                     caption: 1,
                     rent: 1,
                     thumbnail: 1,

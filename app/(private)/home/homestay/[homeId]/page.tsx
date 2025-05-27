@@ -7,13 +7,8 @@ import badeg from "@/public/badge.png";
 import UpvoteButton from "@/app/_components/Upvote";
 import {HomeStayItem} from "@/app/(private)/home/homestay/page";
 import Edit from "@/app/_components/Home/HomeStay/Edit";
+import Review from "@/app/_components/Home/HomeStay/Review";
 
-type IReview = {
-    _id: string;
-    body: string;
-    createdAt: string;
-    commentUpvotes: number;
-}
 
 export async function generateStaticParams() {
     const res = await fetch(`https://team-project-xi-two.vercel.app/api/homestay/public/genstaticprop`);
@@ -27,13 +22,13 @@ export async function generateStaticParams() {
 
 const Page = async ({params}: { params: Promise<{homeId: string }>}) => {
     const {homeId} = await params;
-    const res = await fetch(`https://team-project-xi-two.vercel.app/api/homestay/public/getPostbyId?identifier=${encodeURIComponent(homeId)}`);
+    const res = await fetch(`http://localhost:3000/api/homestay/public/getPostbyId?identifier=${encodeURIComponent(homeId)}`);
 
     if (!res.ok) {
       redirect('/auth/login');
     }
 
-    const {data, flag, message} = await res.json();
+    const {data, flag, message, totalUpvote} = await res.json();
 
     if (!flag) {
         toast.error(message);
@@ -44,26 +39,24 @@ const Page = async ({params}: { params: Promise<{homeId: string }>}) => {
 
     return (
         <main className="max-w-3xl mx-auto p-4 md:p-8  shadow-lg rounded-lg my-8 relative">
-            <Edit id={data.owner._id}/>
+            <Edit item={data}/>
             {/* Thumbnail and Title */}
             <div className="flex flex-col md:flex-row gap-6 items-center mb-6">
                 <div className="relative w-full md:w-64 h-48 max-h-[200px] max-w-[200px] rounded-lg shadow overflow-hidden">
                     <Image
                         src={data.thumbnail.url}
-                        alt={data.tittle}
+                        alt={data.title}
                         fill
                         style={{ objectFit: 'cover' }} // maintain aspect ratio and cover container
                         priority // optional: for better loading if important image
                     />
                 </div>
                 <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-bold mb-2">{data.tittle}</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold mb-2">{data.title}</h1>
                     <p className="text-gray-600 mb-2">{data.caption}</p>
-                    {/*<UpvoteButton*/}
-                    {/*    count={totalUpvotes}*/}
-                    {/*    onUpvote={handlePostUpvote}*/}
-                    {/*    ariaLabel="Upvote this post"*/}
-                    {/*/>*/}
+                    <UpvoteButton
+                        count={totalUpvote}
+                    />
                 </div>
             </div>
 
@@ -112,31 +105,7 @@ const Page = async ({params}: { params: Promise<{homeId: string }>}) => {
                     </div>
                 </div>
             </div>
-            <section className="mb-4">
-                <h2 className="text-xl font-semibold mb-3">Reviews </h2>
-                {data.review.length === 0 ? (
-                    <div className="text-gray-500">No reviews yet.</div>
-                ) : (
-                    <ul className="space-y-4">
-                        {data.review.map((review:IReview) => (
-                            <li
-                                key={review._id}
-                                className="bg-gray-100 rounded-lg p-3 flex flex-col md:flex-row md:items-center justify-between"
-                            >
-                                <div>
-                                    <div className="text-gray-800">{review.body}</div>
-                                    <div className="text-xs text-gray-500 mt-1">
-                                        {new Date(review.createdAt).toLocaleString()}
-                                    </div>
-                                </div>
-                                <UpvoteButton
-                                    count={review.commentUpvotes}
-                                />
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </section>
+            <Review review={data.review}/>
         </main>
     );
 }

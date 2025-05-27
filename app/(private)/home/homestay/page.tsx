@@ -8,7 +8,7 @@ import HomeStayCard from "@/app/_components/Home/HomeStay/HomeStayCard";
 
 export interface HomeStayItem {
     _id: string;
-    tittle: string;
+    title: string;
     caption: string;
     thumbnail: {
         url: string;

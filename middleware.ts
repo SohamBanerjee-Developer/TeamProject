@@ -3,7 +3,7 @@ import {NextRequest, NextResponse} from "next/server";
 // Removed import { cookies } from "next/headers" because it's not usable in middleware
 import {decryptUserId} from "@/app/_utils/jose/helper";
 import {JwtPayload} from "jsonwebtoken";
-import {cookies} from "next/headers";
+
 
 
 export async function middleware(request: NextRequest) {
@@ -19,36 +19,42 @@ export async function middleware(request: NextRequest) {
         if (token) {
             try {
                 validSession = await decryptUserId(token);
+                // console.log(validSession)
+
             } catch {
                 validSession = null;
             }
         }
 
+
         // Redirect logged-in users away from /auth routes to home
         if (validSession?._id && isPublicRoute) {
+            console.log("hello")
             return NextResponse.redirect(new URL("/", request.nextUrl));
         }
 
         // Redirect unauthenticated users trying to access protected routes to login
         if (!validSession?._id && !isPublicRoute) {
-
-            const cookieStore = await cookies();
-            cookieStore.delete("accessToken");
-            cookieStore.delete("role");
-            return NextResponse.redirect(new URL("/auth/login", request.nextUrl));
+            console.log("hello2");
+            const response = NextResponse.redirect(new URL("/auth/login", request.nextUrl));
+            response.cookies.delete("accessToken");
+            response.cookies.delete("role");
+            return response;
         }
 
 
         if (validSession?._id) {
+            console.log("hello3")
             const newHeaders = new Headers(request.headers);
             newHeaders.set("user_id", validSession?._id);
-
             return NextResponse.next({
                 headers: newHeaders,
             });
         }
 
         // For public routes and no session, just continue
+        console.log("hello4")
+
         return NextResponse.next();
     } catch (error) {
         console.error("middleware error:", error);
@@ -57,6 +63,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/auth/:path*", "/api/homestay/private/:path*", "/home/university/:path+", "/api/upvote", "/api/comment/:path*"],
-
+    matcher: ["/auth/:path*", "/home/university/:path+", "/api/upvote", "/api/comment/:path*", "/home/uploadpg"],
 };

@@ -3,9 +3,9 @@ import React, {FC} from 'react'
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>{
     className: string;
     placeholder?: string;
-    name: string;
-    id: string;
-    type: string;
+    name?: string;
+    id?: string;
+    type?: string;
 }
 
 const Input:FC<InputProps> = ({className, placeholder, type, name, id, ...props}) => {

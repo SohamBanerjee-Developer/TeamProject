@@ -6,7 +6,7 @@ import badeg from "@/public/badge.png"
 // If using TypeScript, define the prop type:
 type HomeStayItem = {
     _id: string;
-    tittle: string;
+    title: string;
     caption: string;
     thumbnail: {
         url: string;
@@ -41,7 +41,7 @@ const HomeStayCard: React.FC<HomeStayCardProps> = ({item}) => {
                 <div className="relative max-h-[15rem] sm:max-h-[13rem] md:max-h-[12rem] w-full overflow-hidden p-2 border-2 border-gray-600 rounded-lg">
                     <Image
                         src={item.thumbnail.url}
-                        alt={item.tittle}
+                        alt={item.title}
                         className="w-full h-32 sm:h-24 md:h-20 object-cover relative"
                         width={400}
                         height={300}
@@ -49,7 +49,7 @@ const HomeStayCard: React.FC<HomeStayCardProps> = ({item}) => {
                     />
                 </div>
                 <div className="p-2 sm:p-2 md:p-3 text-gray-300">
-                    <h3 className="text-xl sm:text-lg md:text-base underline font-[700]">{item.tittle}</h3>
+                    <h3 className="text-xl sm:text-lg md:text-base underline font-[700]">{item.title}</h3>
                     <p className="font-medium mb-1 sm:mb-1 text-sm sm:text-xs">{item.caption}</p>
                     <p className="font-medium mb-1 sm:mb-1 text-sm sm:text-xs">{item.university}</p>
                     <p className="text-lg sm:text-base md:text-sm font-bold text-blue-400 mb-2">₹{item.rent}/month</p>

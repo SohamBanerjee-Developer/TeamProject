@@ -13,6 +13,8 @@ export const asyncHandler = <T extends any[] = any>(fn: AsyncHandler<T>): AsyncH
             return await fn(...args);
         } catch (error: unknown) {
             if (error instanceof AppError) {
+                console.log(error.message)
+
                 return Response.json(
                     {flag: false, message: error.message},
                     {status: error.code}
@@ -20,6 +22,7 @@ export const asyncHandler = <T extends any[] = any>(fn: AsyncHandler<T>): AsyncH
             }
 
             if (error instanceof Error) {
+                console.log(error.message)
                 return Response.json(
                     {flag: false, message: error.message},
                     {status: 500}

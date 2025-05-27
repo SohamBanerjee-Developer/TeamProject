@@ -33,7 +33,7 @@ const searchUniversity = async (req: NextRequest) => {
         {
             $lookup: {
                 from: "universities",
-                localField: "associateUniversity",
+                localField: "associatedUniversity",
                 foreignField: "_id",
                 as: "university"
             }
@@ -103,12 +103,12 @@ const searchUniversity = async (req: NextRequest) => {
         {
             $project: {
                 _id: 1,
-                tittle: 1,
+                title: 1,
                 details: 1,
                 caption: 1,
                 rent: 1,
                 maxRoom: 1,
-                associateUniversity: 1,
+                associatedUniversity: 1,
                 location: 1,
                 thumbnail: 1,
                 houseNumber: 1,
