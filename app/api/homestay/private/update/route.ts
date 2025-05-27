@@ -31,10 +31,10 @@ const updatePost = async (req: NextRequest) => {
         location,
         thumbnail,
         houseNumber,
-        postId
+        _id
     } = (await req.json()) as reqJson;
 
-    if (!postId) {
+    if (!_id) {
         throw new AppError("Invalid or missing post ID", 400);
     }
     // Validate required fields
@@ -47,7 +47,7 @@ const updatePost = async (req: NextRequest) => {
     }
 
 
-    const existingPost = await HomeStay.findOne({_id: new ObjectId(postId)});
+    const existingPost = await HomeStay.findOne({_id: new ObjectId(String(_id))});
 
     if (!existingPost) {
         throw new AppError("Post not found", 404);
@@ -60,7 +60,7 @@ const updatePost = async (req: NextRequest) => {
 
     // Update the post
     const updated = await HomeStay.findOneAndUpdate(
-        {_id: new ObjectId(postId)},
+        {_id: new ObjectId(String(_id))},
         {
             $set: {
                 title,
@@ -68,7 +68,7 @@ const updatePost = async (req: NextRequest) => {
                 caption,
                 rent,
                 maxRoom,
-                associateUniversity: new ObjectId(String(associatedUniversity)),
+                associatedUniversity: new ObjectId(String(associatedUniversity)),
                 location,
                 thumbnail,
                 houseNumber,
@@ -110,7 +110,7 @@ const updatePost = async (req: NextRequest) => {
                 caption: 1,
                 rent: 1,
                 maxRoom: 1,
-                associateUniversity: 1,
+                associatedUniversity: 1,
                 location: 1,
                 thumbnail: 1,
                 houseNumber: 1,

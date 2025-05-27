@@ -10,7 +10,7 @@ import Input from "@/app/_components/Input";
 import FormButton from "@/app/_components/FormButton";
 import {CloudinaryUploadResult} from "@/app/(private)/home/uploadpg/page";
 import {toast} from "react-toastify";
-import {createPg, HomeStayData} from "@/app/_lib/actions/Edit/action";
+import {createPg, HomeStayData, pgUpdate, updatePg} from "@/app/_lib/actions/Edit/action";
 import {useRouter} from "next/navigation";
 import {HomeStayItem} from "./Edit";
 
@@ -54,7 +54,7 @@ const CreateHomeStay = ({item, isEditing}: { item?: HomeStayItem; isEditing: boo
             rent: item.maxRoom,
             details: item.details,
             location: item.location,
-            associatedUniversity: item.university._id,
+            associatedUniversity: String(item.university._id),
             houseNumber: item.houseNumber
         } : {
             title: "",
@@ -102,8 +102,11 @@ const CreateHomeStay = ({item, isEditing}: { item?: HomeStayItem; isEditing: boo
     }, [item, isEditing, reset]);
 
     const submit = async (data: FormData) => {
-        if (isEditing && item) {
 
+        if (isEditing && item) {
+            if (!data.thumbnail) {
+
+            }
         } else {
             if (!thumbnailPreview?.url) {
                 toast.error("thumbnail is required");

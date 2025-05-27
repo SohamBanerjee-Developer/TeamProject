@@ -5,6 +5,7 @@ import {revalidatePath} from "next/cache";
 import {cookies} from "next/headers";
 import {JwtPayload} from "jsonwebtoken";
 import {decryptUserId} from "@/app/_utils/jose/helper";
+import {HomeStayItem} from "@/app/_components/Home/HomeStay/Edit";
 
 
 interface Thumbnail {
@@ -24,15 +25,27 @@ export interface HomeStayData {
     rent: number;
     details: string;
     location: string;
-    associatedUniversity: university; // assuming this is an ID string
+    associatedUniversity: string; // assuming this is an ID string
     houseNumber: string;
     thumbnail: Thumbnail;
     postId?: string,
     _id?: string | unknown
 }
 
-interface y extends IHome {
-    postId:string
+export interface pgUpdate {
+    _id: string;
+    title: string; // ⚠️ Consider correcting to `title` for consistency
+    caption: string;
+    thumbnail: {
+        url: string;
+        publicId: string;
+    };
+    maxRoom: number;
+    rent: number;
+    details: string;
+    location: string;
+    associatedUniversity: string;
+    houseNumber: string;
 }
 
 export const createPg = async (pg:HomeStayData) => {
@@ -77,7 +90,7 @@ export const createPg = async (pg:HomeStayData) => {
     revalidatePath("/home/homestay")
 }
 
-export const updatePg = async (pg:y) => {
+export const updatePg = async (pg:HomeStayItem) => {
     const cookieStore = await cookies();
     const token = cookieStore.get("accessToken")?.value || "";
     let validSession: { _id: string; email: string; iat: number; exp: number } | null | JwtPayload = null;
@@ -85,8 +98,6 @@ export const updatePg = async (pg:y) => {
     if (token) {
         try {
             validSession = await decryptUserId(token);
-            // console.log(validSession)
-
         } catch {
             validSession = null;
         }
