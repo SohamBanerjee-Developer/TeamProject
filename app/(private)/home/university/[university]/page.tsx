@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from "next/image";
-
+import Universitynav from '@/app/_components/universitynav';
 type University = {
     _id: string;
     name: string;
@@ -24,7 +24,7 @@ const Page = async ({params}: { params: Promise<{ university: string }> }) => {
     if (!resData.flag) throw new Error(resData.message);
     const resUniversity = resData.data as University;
 
-    return (
+    return (<>
         <article
             key={resUniversity._id}
             className="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden my-6 md:flex md:items-center"
@@ -51,6 +51,9 @@ const Page = async ({params}: { params: Promise<{ university: string }> }) => {
                 <p className="text-gray-700 text-base">{resUniversity.description}</p>
             </div>
         </article>
+        <Universitynav params={university}/>
+        </>
+        
     )
 }
 export default Page

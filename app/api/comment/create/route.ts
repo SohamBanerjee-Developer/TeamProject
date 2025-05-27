@@ -5,6 +5,7 @@ import {CommentModel} from "@/app/_lib/models/Comment";
 
 const commentHandler = async (req: NextRequest) => {
     const user_id = req.headers.get("user_id") as string;
+    
 
     if (!user_id) throw new AppError("Please validate your credential ", 401);
 

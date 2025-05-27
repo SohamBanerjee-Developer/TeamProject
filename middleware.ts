@@ -57,6 +57,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/auth/:path*", "/api/homestay/private/:path*", "/home/university/:path+", "/api/upvote", "/api/comment/:path*"],
+    matcher: ["/auth/:path*", "/api/homestay/private/:path*", "/home/university/:path+", "/api/upvote", "/api/comment/:path*", "/api/v1/Community/:path*"],
 
 };
