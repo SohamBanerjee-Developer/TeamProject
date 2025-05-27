@@ -1,0 +1,29 @@
+ @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            /* font-size: 1.5rem; */
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #e0f2fe 0%, #b3e5fc 100%);
+        }
+        
+        .post-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .like-button.liked {
+            color: #e91e63;
+        }
+        
+        .modal-overlay {
+            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.6);
+        }
+        
+        .preview-container {
+            background: linear-gradient(145deg, #f0f4f8, #e2e8f0);
+        }

@@ -1,4 +1,4 @@
-import {Schema, model, Model} from "mongoose";
+import {Schema, model, Model, models} from "mongoose";
 // import { string } from "zod";
 import { databaseConnection } from "../db/database";
 
@@ -8,9 +8,9 @@ databaseConnection()
 export interface post{
     userId: Schema.Types.ObjectId;
     universityId: Schema.Types.ObjectId;
-    title: string;
     body: string;
     documentUrl: string;
+    documentType: "video"|"poll"|"image";
     hashtags: string;
 }
 
@@ -20,12 +20,12 @@ export interface hashtag{
 
 
 const postSchema = new Schema<post>({
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true, trim: true },
+    userId: { type: Schema.Types.ObjectId, ref: "Users", required: true, trim: true },
     universityId: { type: Schema.Types.ObjectId, ref: "University", required: true, trim: true },
-    title: {type: String},
     body: {type: String},
     documentUrl: {type: String},
-    hashtags:[ {type: String, ref: "Hashtag" }]//suggest hashtags while posting
+    documentType: {type: String, enum:["video", "poll", "image"]},
+    hashtags:[ {type: Schema.Types.ObjectId, ref: "Hashtag" }]//suggest hashtags while posting
 
 },{
     timestamps: true,
@@ -38,5 +38,5 @@ export const hashtagSchema = new Schema<hashtag>({
 
 
 
-export const postModel:Model<post> = model<post>("Post", postSchema);
-export const hashtagModel:Model<hashtag> = model<hashtag>("Hashtag", hashtagSchema);
+export const postModel:Model<post> = models.CommunityPost || model<post>("CommunityPost", postSchema);
+export const hashtagModel:Model<hashtag> = models.Hashtag || model<hashtag>("Hashtag", hashtagSchema);

@@ -17,7 +17,7 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-full relative">
                 {/* Logo */}
                 <Link href="/" className="text-lg font-bold">
-                    StayFinder
+                    SENV
                 </Link>
 
                 {/* Three Dots Button (Mobile) */}
