@@ -111,6 +111,13 @@ export default function Navbar() {
                     >
                        Universities
                     </Link>
+                    <Link
+                        href="/home/homestay"
+                        className="block py-2 md:py-0 hover:text-blue-300 font-semibold"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                       homestay
+                    </Link>
                     {
                         isAuthenticated ? <button className="font-bold" onClick={async () => {
 
